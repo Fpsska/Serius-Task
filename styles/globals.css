@@ -65,6 +65,7 @@ address {
 
 :root {
     --yellow-color: #ffd748;
+    --white-color: #fff;
     --dark-color: #423f45;
     --blue-color: #104987;
     --green-color: #38df7a;
@@ -75,11 +76,16 @@ address {
 
 html,
 body {
+    height: 100%;
     padding: 0;
     margin: 0;
-    color: #423f45;
+    color: var(--dark-color);
     font-size: 14px;
     font-family: Calibri, sans-serif;
 }
 
 /* /. general-styles */
+
+#__next {
+    height: 100%;
+}

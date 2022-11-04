@@ -18,7 +18,8 @@
     "import",
     "react",
     "react-hooks",
-    "prettier"
+    "prettier",
+    "@emotion"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -63,6 +64,10 @@
         "newlines-between": "always-and-inside-groups"
       }
     ],
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "@emotion/jsx-import": "error",
+    "@emotion/no-vanilla": "error",
+    "@emotion/import-from-emotion": "error",
+    "@emotion/styled-import": "error"
   }
 }
