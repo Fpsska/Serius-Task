@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -126,7 +126,7 @@ interface IvalueItem {
 
 // /. interfaces
 
-const StartPage: React.FC = () => {
+const StartPage = () => {
     const [quantityItemData, setQuantityItemData] = useState<IquantityItem[]>([
         {
             id: 1,
