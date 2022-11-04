@@ -1,9 +1,7 @@
-html,
-body {
-    padding: 0;
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 a {
@@ -11,16 +9,77 @@ a {
     text-decoration: none;
 }
 
-* {
-    box-sizing: border-box;
+button {
+    border: none;
+    padding: 0;
+    cursor: pointer;
 }
 
-@media (prefers-color-scheme: dark) {
-    html {
-        color-scheme: dark;
-    }
-    body {
-        color: white;
-        background: black;
-    }
+ul,
+li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+    display: inline-block;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+figure {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+blockquote {
+    margin: 0;
+}
+
+address {
+    font-style: normal;
+}
+
+/* /. null-styles */
+
+:root {
+    --yellow-color: #ffd748;
+    --dark-color: #423f45;
+    --blue-color: #104987;
+    --green-color: #38df7a;
+    --violet-color: #5f40a1;
+}
+
+/* /. roots */
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    color: #423f45;
+    font-size: 14px;
+    font-family: Calibri, sans-serif;
+}
+
+/* /. general-styles */
