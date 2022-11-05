@@ -39,7 +39,7 @@ const Overlay = styled.div`
 // /. styled components
 
 const Layout = ({ children }: any) => {
-    const [isModalVisible, setModalVisibleStatus] = useState<boolean>(true);
+    const [isModalVisible, setModalVisibleStatus] = useState<boolean>(false);
 
     return (
         <>
@@ -47,7 +47,7 @@ const Layout = ({ children }: any) => {
             <Main>
                 {isModalVisible && (
                     <Overlay>
-                        <Modal />
+                        <Modal setModalVisibleStatus={setModalVisibleStatus} />
                     </Overlay>
                 )}
                 {children}

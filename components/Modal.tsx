@@ -114,7 +114,13 @@ const Button = styled.button`
 
 // /. styled components
 
-const Modal = () => {
+interface propTypes {
+    setModalVisibleStatus: (arg: boolean) => void;
+}
+
+const Modal: React.FC<propTypes> = props => {
+    const { setModalVisibleStatus } = props;
+
     return (
         <StyledModal>
             <Wrapper>
@@ -124,7 +130,9 @@ const Modal = () => {
                 <StarSmall />
                 <Title>Победа!</Title>
                 <Caption>Молодец! Ты успешно справился с заданием!</Caption>
-                <Button>Заново</Button>
+                <Button onClick={() => setModalVisibleStatus(false)}>
+                    Заново
+                </Button>
             </Wrapper>
         </StyledModal>
     );
