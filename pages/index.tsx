@@ -1,18 +1,13 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import styled from '@emotion/styled';
 
 // /. imports
 
 const Section = styled.section`
-    width: 100vw;
-    height: 100vh;
-    padding: 90px 140px;
-    background-color: #a2d3da;
-    background-image: url(/images/background-template_settings.png);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    position: relative;
+    width: 100%;
+    height: 100%;
 `;
 
 const Wrapper = styled.div`
