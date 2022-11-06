@@ -6,9 +6,8 @@ import styled from '@emotion/styled';
 
 import { IvalueItem } from '../types/valueItemTypes';
 import { IquantityItem } from '../types/quantityItemTypes';
-import { IbuttonMode } from '../types/buttonModTypes';
 
-import ButtonMode from '../components/ButtonMode';
+import Mode from '../components/Mode';
 
 // /. imports
 
@@ -28,12 +27,6 @@ const Wrapper = styled.div`
     color: var(--dark-color);
     border-radius: 5%;
     padding: 20px;
-`;
-
-const Mode = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-bottom: 95px;
 `;
 
 const ButtonPlay = styled.button`
@@ -182,26 +175,6 @@ const StartPage = () => {
             isSelected: false
         }
     ]);
-    const [buttonModeTemplates, setButtonModeTemplates] = useState<
-        IbuttonMode[]
-    >([
-        {
-            id: 1,
-            value: 'ascending',
-            name: 'mode',
-            forAttr: 'mode-asc',
-            label: 'По возврастанию',
-            isSelected: false
-        },
-        {
-            id: 2,
-            value: 'descending',
-            name: 'mode',
-            forAttr: 'mode-dec',
-            label: 'По убыванию',
-            isSelected: true
-        }
-    ]);
 
     const [itemQuantityValue, setItemQuantityValue] = useState<string>('');
     const [itemValue, setItemValue] = useState<string>('');
@@ -314,23 +287,7 @@ const StartPage = () => {
                     </FieldsetGrowed>
                     <Fieldset>
                         <Legend hidden>Режим</Legend>
-                        <Mode>
-                            {buttonModeTemplates.map(button => {
-                                return (
-                                    <ButtonMode
-                                        key={button.id}
-                                        {...button}
-                                        setModeValue={setModeValue}
-                                        setButtonModeTemplates={
-                                            setButtonModeTemplates
-                                        }
-                                        buttonModeTemplates={
-                                            buttonModeTemplates
-                                        }
-                                    />
-                                );
-                            })}
-                        </Mode>
+                        <Mode setModeValue={setModeValue} />
                     </Fieldset>
 
                     <ButtonPlay

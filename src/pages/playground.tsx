@@ -2,6 +2,8 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import Bar from '../components/Bar';
+
 // /.imports
 
 const Section = styled.section`
@@ -16,29 +18,7 @@ const Wrapper = styled.div`
     height: 100%;
 `;
 
-const Bar = styled.div`
-    background-color: #444;
-    border-radius: 20px;
-    padding: 20px;
-    min-height: 70px;
-`;
-
-const BarList = styled.ul`
-    display: grid;
-    grid-gap: 5px;
-    grid-template-columns: repeat(6, 1fr);
-`;
-
-const BarListTemplate = styled.li`
-    height: 130px;
-    background-color: yellow;
-    border-radius: 100%;
-
-    background: rgba(0, 0, 0, 0.06);
-    box-shadow: inset 0px 4px 25px rgba(0, 0, 0, 0.25);
-`;
-
-const ItemsList = styled(BarList)`
+const ItemsList = styled.ul`
     flex: 1;
     display: grid;
     grid-gap: 5px;
@@ -125,16 +105,7 @@ const PlaygroundPage = () => {
                     </PromptSVG>
                 </Prompt>
 
-                <Bar>
-                    <BarList>
-                        <BarListTemplate></BarListTemplate>
-                        <BarListTemplate></BarListTemplate>
-                        <BarListTemplate></BarListTemplate>
-                        <BarListTemplate></BarListTemplate>
-                        <BarListTemplate></BarListTemplate>
-                        <BarListTemplate></BarListTemplate>
-                    </BarList>
-                </Bar>
+                <Bar />
             </Wrapper>
         </Section>
     );
