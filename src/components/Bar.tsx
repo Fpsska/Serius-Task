@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
 // /.imports
 
 const StyledBar = styled.div`
+    background-repeat: no-repeat;
+    background-size: 200% auto;
+    background-position: center;
     background-color: #444;
     border-radius: 20px;
     padding: 20px;
@@ -28,8 +31,12 @@ const BarListTemplate = styled.li`
 // /. styled components
 
 const Bar = () => {
+    const [backgroundIMG, setBackgroundIMG] = useState<string>(
+        '/images/bar-template_1.png'
+    );
+
     return (
-        <StyledBar>
+        <StyledBar style={{ backgroundImage: `url(${backgroundIMG})` }}>
             <BarList>
                 <BarListTemplate></BarListTemplate>
                 <BarListTemplate></BarListTemplate>

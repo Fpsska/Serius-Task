@@ -65,7 +65,7 @@ const Mode = (props: propTypes) => {
             name: 'mode',
             forAttr: 'mode-asc',
             label: 'По возврастанию',
-            isSelected: false
+            isSelected: true
         },
         {
             id: 2,
@@ -73,7 +73,7 @@ const Mode = (props: propTypes) => {
             name: 'mode',
             forAttr: 'mode-dec',
             label: 'По убыванию',
-            isSelected: true
+            isSelected: false
         }
     ]);
 

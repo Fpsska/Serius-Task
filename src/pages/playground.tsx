@@ -3,6 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import Bar from '../components/Bar';
+import Prompt from '../components/Prompt';
 
 // /.imports
 
@@ -35,27 +36,6 @@ const ItemsListTemplate = styled.li`
     }
 `;
 
-const Prompt = styled.div`
-    display: flex;
-    align-items: center;
-    margin: 40px 0 20px 0;
-`;
-
-const PromptText = styled.span`
-    color: var(--white-color);
-    font-size: 26px;
-    text-shadow: 1px 1px #000, -1px 1px #000, 1px -1px #000, -1px -1px #000,
-        1px 1px 5px #000;
-    z-index: 2;
-`;
-
-const PromptSVG = styled.svg`
-    position: relative;
-    margin-left: -16rem;
-    transform: translate(-0.7rem, 0.25rem) scale(0.7);
-    z-index: 1;
-`;
-
 // /. styled components
 
 const PlaygroundPage = () => {
@@ -70,40 +50,7 @@ const PlaygroundPage = () => {
                     <ItemsListTemplate></ItemsListTemplate>
                 </ItemsList>
 
-                <Prompt>
-                    <PromptText>По возврастанию</PromptText>
-                    <PromptSVG
-                        width="358"
-                        height="69"
-                        viewBox="0 0 358 69"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M294.278 0L357.5 34.3222L294.278 68.6443V50.3945H0V18.2499H294.278V0Z"
-                            fill="url(#paint0_linear_1_169)"
-                        />
-                        <defs>
-                            <linearGradient
-                                id="paint0_linear_1_169"
-                                x1="311.5"
-                                y1="68.636"
-                                x2="103"
-                                y2="13.5"
-                                gradientUnits="userSpaceOnUse"
-                            >
-                                <stop stopColor="#FEFFDE" />
-                                <stop
-                                    offset="0.625112"
-                                    stopColor="white"
-                                    stopOpacity="0"
-                                />
-                            </linearGradient>
-                        </defs>
-                    </PromptSVG>
-                </Prompt>
+                <Prompt role={'ascending'} />
 
                 <Bar />
             </Wrapper>

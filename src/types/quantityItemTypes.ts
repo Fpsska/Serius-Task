@@ -1,6 +1,6 @@
 export interface IquantityItem {
     id: number;
-    value: number;
+    value: string;
     name: string;
     isSelected: boolean;
 }

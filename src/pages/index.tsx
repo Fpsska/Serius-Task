@@ -114,25 +114,25 @@ const StartPage = () => {
     const [quantityItemData, setQuantityItemData] = useState<IquantityItem[]>([
         {
             id: 1,
-            value: 2,
+            value: '2',
             name: 'item-quantity',
             isSelected: true
         },
         {
             id: 2,
-            value: 3,
+            value: '3',
             name: 'item-quantity',
             isSelected: false
         },
         {
             id: 3,
-            value: 4,
+            value: '4',
             name: 'item-quantity',
             isSelected: false
         },
         {
             id: 4,
-            value: 5,
+            value: '5',
             name: 'item-quantity',
             isSelected: false
         }
@@ -185,6 +185,8 @@ const StartPage = () => {
 
     const router = useRouter();
 
+    // /. hooks
+
     const onInputQuantityChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         id: number
@@ -219,17 +221,21 @@ const StartPage = () => {
         e.preventDefault();
         //
         setGameSettings({
-            quantity: itemQuantityValue,
-            totalValue: itemValue,
-            mode: modeValue
+            quantity: itemQuantityValue || quantityItemData[0]?.value,
+            totalValue: itemValue || valueItemData[0]?.value,
+            mode: modeValue || 'ascending'
         });
         //
         router.push('/playground');
     };
 
+    // /. functions
+
     useEffect(() => {
         console.log(gameSettings);
     }, [gameSettings]);
+
+    // /. effects
 
     return (
         <Section>
