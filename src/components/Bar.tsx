@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
+import { getRandomArrElement } from '../helpers/getRandomArrElement';
+
 // /.imports
 
 const StyledBar = styled.div`
@@ -31,9 +33,21 @@ const BarListTemplate = styled.li`
 // /. styled components
 
 const Bar = () => {
-    const [backgroundIMG, setBackgroundIMG] = useState<string>(
-        '/images/bar-template_1.png'
-    );
+    const [backgroundIMG, setBackgroundIMG] = useState<string>('');
+    const [backgroundsCollection] = useState<string[]>([
+        '/images/bar-template_1.png',
+        '/images/bar-template_2.png',
+        '/images/bar-template_3.png',
+        '/images/bar-template_4.png'
+    ]);
+
+    // /. hooks
+
+    useEffect(() => {
+        setBackgroundIMG(getRandomArrElement(backgroundsCollection));
+    }, [backgroundsCollection]);
+
+    // /. effects
 
     return (
         <StyledBar style={{ backgroundImage: `url(${backgroundIMG})` }}>
