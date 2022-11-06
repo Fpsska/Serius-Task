@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import styled from '@emotion/styled';
 
 // /. imports
 
 const Section = styled.section`
     position: relative;
+    padding: 75px 95px;
     width: 100%;
     height: 100%;
 `;
@@ -187,10 +190,12 @@ const StartPage = () => {
         }
     ]);
 
+    const router = useRouter();
+
     return (
         <Section>
             <Wrapper>
-                <Form>
+                <Form onSubmit={e => e.preventDefault()}>
                     <Fieldset>
                         <Legend>Кол-во предметов</Legend>
                         <List>
@@ -242,7 +247,12 @@ const StartPage = () => {
                             По убыванию
                         </ButtonMode>
                     </Mode>
-                    <ButtonPlay type="submit">Играть</ButtonPlay>
+                    <ButtonPlay
+                        type="submit"
+                        onClick={() => router.push('/playground')}
+                    >
+                        Играть
+                    </ButtonPlay>
                 </Form>
             </Wrapper>
         </Section>
