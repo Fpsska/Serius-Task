@@ -4,6 +4,10 @@ import { useRouter } from 'next/router';
 
 import styled from '@emotion/styled';
 
+import { IvalueItem } from '../types/valueItemTypes';
+import { IquantityItem } from '../types/quantityItemTypes';
+import { IbuttonMode } from '../types/buttonModTypes';
+
 import ButtonMode from '../components/ButtonMode';
 
 // /. imports
@@ -112,31 +116,6 @@ const InputCount = styled.input`
 `;
 
 // /. styled components
-
-interface IquantityItem {
-    id: number;
-    value: number;
-    name: string;
-    isSelected: boolean;
-}
-
-interface IvalueItem {
-    id: number;
-    value: string | number;
-    name: string;
-    isSelected: boolean;
-}
-
-interface IbuttonMode {
-    id: number;
-    value: string;
-    name: string;
-    forAttr: string;
-    label: string;
-    isSelected: boolean;
-}
-
-// /. interfaces
 
 const StartPage = () => {
     const [quantityItemData, setQuantityItemData] = useState<IquantityItem[]>([
