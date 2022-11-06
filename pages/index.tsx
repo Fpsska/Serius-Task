@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 
 import styled from '@emotion/styled';
 
+import ButtonMode from '../components/ButtonMode';
+
 // /. imports
 
 const Section = styled.section`
@@ -28,32 +30,6 @@ const Mode = styled.div`
     display: flex;
     justify-content: center;
     margin-bottom: 95px;
-`;
-
-const ButtonMode = styled.input`
-    position: absolute;
-    overflow: hidden;
-    height: 1px;
-    width: 1px;
-    clip: rect(0 0 0 0);
-    &:disabled {
-        opacity: 0.5;
-    }
-`;
-
-const ButtonModeLabel = styled.label`
-    background-color: var(--yellow-color);
-    padding: 5px 20px;
-    color: var(--dark-color);
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 22px;
-    :not(:last-child) {
-        margin-right: 36px;
-    }
-    &:hover {
-        cursor: pointer;
-    }
 `;
 
 const ButtonPlay = styled.button`
@@ -151,6 +127,15 @@ interface IvalueItem {
     isSelected: boolean;
 }
 
+interface IbuttonMode {
+    id: number;
+    value: string;
+    name: string;
+    forAttr: string;
+    label: string;
+    isSelected: boolean;
+}
+
 // /. interfaces
 
 const StartPage = () => {
@@ -218,6 +203,27 @@ const StartPage = () => {
             isSelected: false
         }
     ]);
+    const [buttonModeTemplates, setButtonModeTemplates] = useState<
+        IbuttonMode[]
+    >([
+        {
+            id: 1,
+            value: 'ascending',
+            name: 'mode',
+            forAttr: 'mode-asc',
+            label: 'По возврастанию',
+            isSelected: false
+        },
+        {
+            id: 2,
+            value: 'descending',
+            name: 'mode',
+            forAttr: 'mode-dec',
+            label: 'По убыванию',
+            isSelected: true
+        }
+    ]);
+
     const [itemQuantityValue, setItemQuantityValue] = useState<string>('');
     const [itemValue, setItemValue] = useState<string>('');
     const [modeValue, setModeValue] = useState<string>('');
@@ -261,9 +267,9 @@ const StartPage = () => {
         e.preventDefault();
         //
         setGameSettings({
-            quantity: itemQuantityValue || 2,
-            totalValue: itemValue || 'A',
-            mode: modeValue || 'ascending'
+            quantity: itemQuantityValue,
+            totalValue: itemValue,
+            mode: modeValue
         });
         //
         router.push('/playground');
@@ -330,27 +336,21 @@ const StartPage = () => {
                     <Fieldset>
                         <Legend hidden>Режим</Legend>
                         <Mode>
-                            <ButtonModeLabel htmlFor="mode-asc">
-                                По возврастанию
-                                <ButtonMode
-                                    id="mode-asc"
-                                    type="radio"
-                                    name="mode"
-                                    value="ascending"
-                                    onChange={e => setModeValue(e.target.value)}
-                                />
-                            </ButtonModeLabel>
-
-                            <ButtonModeLabel htmlFor="mode-des">
-                                По убыванию
-                                <ButtonMode
-                                    id="mode-des"
-                                    type="radio"
-                                    name="mode"
-                                    value="descending"
-                                    onChange={e => setModeValue(e.target.value)}
-                                />
-                            </ButtonModeLabel>
+                            {buttonModeTemplates.map(button => {
+                                return (
+                                    <ButtonMode
+                                        key={button.id}
+                                        {...button}
+                                        setModeValue={setModeValue}
+                                        setButtonModeTemplates={
+                                            setButtonModeTemplates
+                                        }
+                                        buttonModeTemplates={
+                                            buttonModeTemplates
+                                        }
+                                    />
+                                );
+                            })}
                         </Mode>
                     </Fieldset>
 
