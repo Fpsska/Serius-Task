@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -26,29 +26,47 @@ const Wrapper = styled.div`
 
 const Mode = styled.div`
     display: flex;
+    justify-content: center;
     margin-bottom: 95px;
 `;
 
-const ButtonMode = styled.button`
-    background-color: var(--yellow-color);
-    color: var(--dark-color);
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 22px;
-    padding: 5px 20px;
-    :not(:last-child) {
-        margin-right: 36px;
-    }
+const ButtonMode = styled.input`
+    position: absolute;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    clip: rect(0 0 0 0);
     &:disabled {
         opacity: 0.5;
     }
 `;
 
-const ButtonPlay = styled(ButtonMode)`
+const ButtonModeLabel = styled.label`
+    background-color: var(--yellow-color);
+    padding: 5px 20px;
+    color: var(--dark-color);
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 22px;
+    :not(:last-child) {
+        margin-right: 36px;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+const ButtonPlay = styled.button`
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 22px;
     box-shadow: 0px 14px 8px -5px rgba(34, 60, 80, 0.1);
     background-color: var(--green-color);
     color: var(--white-color);
     padding: 12px 74px;
+    &:disabled {
+        opacity: 0.5;
+    }
 `;
 
 const Form = styled.form`
@@ -63,6 +81,12 @@ const Form = styled.form`
 `;
 
 const Fieldset = styled.fieldset`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+`;
+
+const FieldsetGrowed = styled(Fieldset)`
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -89,6 +113,7 @@ const Legend = styled.legend`
     font-size: 28px;
     text-align: center;
     margin-bottom: 16px;
+    visibility: ${props => props.hidden && 'hidden'};
 `;
 
 const Label = styled.label`
@@ -96,7 +121,11 @@ const Label = styled.label`
     font-weight: 700;
     font-size: 18px;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
     order: -1;
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const InputCount = styled.input`
@@ -189,14 +218,66 @@ const StartPage = () => {
             isSelected: false
         }
     ]);
+    const [itemQuantityValue, setItemQuantityValue] = useState<string>('');
+    const [itemValue, setItemValue] = useState<string>('');
+    const [modeValue, setModeValue] = useState<string>('');
+    const [gameSettings, setGameSettings] = useState<{
+        [key: string]: string | number;
+    }>({});
 
     const router = useRouter();
+
+    const onInputQuantityChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        id: number
+    ): void => {
+        setItemQuantityValue(e.target.value);
+        //
+        const newArr = [...quantityItemData];
+        newArr.map(item =>
+            item.id === id
+                ? (item.isSelected = true)
+                : (item.isSelected = false)
+        );
+        setQuantityItemData(newArr);
+    };
+
+    const onInputTotalValueChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        id: number
+    ): void => {
+        setItemValue(e.target.value);
+        //
+        const newArr = [...valueItemData];
+        newArr.map(item =>
+            item.id === id
+                ? (item.isSelected = true)
+                : (item.isSelected = false)
+        );
+        setValueItemData(newArr);
+    };
+
+    const onButtonPlayClick = (e: React.SyntheticEvent): void => {
+        e.preventDefault();
+        //
+        setGameSettings({
+            quantity: itemQuantityValue || 2,
+            totalValue: itemValue || 'A',
+            mode: modeValue || 'ascending'
+        });
+        //
+        router.push('/playground');
+    };
+
+    useEffect(() => {
+        console.log(gameSettings);
+    }, [gameSettings]);
 
     return (
         <Section>
             <Wrapper>
                 <Form onSubmit={e => e.preventDefault()}>
-                    <Fieldset>
+                    <FieldsetGrowed>
                         <Legend>Кол-во предметов</Legend>
                         <List>
                             {quantityItemData.map((input: IquantityItem) => (
@@ -206,7 +287,11 @@ const StartPage = () => {
                                         id={`${input.name}-${input.id}`}
                                         type="radio"
                                         name={input.name}
-                                        defaultChecked={input.isSelected}
+                                        value={input.value}
+                                        checked={input.isSelected}
+                                        onChange={e =>
+                                            onInputQuantityChange(e, input.id)
+                                        }
                                     />
                                     <Label
                                         htmlFor={`${input.name}-${input.id}`}
@@ -216,8 +301,8 @@ const StartPage = () => {
                                 </ListTemplate>
                             ))}
                         </List>
-                    </Fieldset>
-                    <Fieldset>
+                    </FieldsetGrowed>
+                    <FieldsetGrowed>
                         <Legend>Значения</Legend>
                         <List>
                             {valueItemData.map((input: IvalueItem) => (
@@ -227,7 +312,11 @@ const StartPage = () => {
                                         id={`${input.name}-${input.id}`}
                                         type="radio"
                                         name={input.name}
-                                        defaultChecked={input.isSelected}
+                                        value={input.value}
+                                        checked={input.isSelected}
+                                        onChange={e =>
+                                            onInputTotalValueChange(e, input.id)
+                                        }
                                     />
                                     <Label
                                         htmlFor={`${input.name}-${input.id}`}
@@ -237,19 +326,37 @@ const StartPage = () => {
                                 </ListTemplate>
                             ))}
                         </List>
+                    </FieldsetGrowed>
+                    <Fieldset>
+                        <Legend hidden>Режим</Legend>
+                        <Mode>
+                            <ButtonModeLabel htmlFor="mode-asc">
+                                По возврастанию
+                                <ButtonMode
+                                    id="mode-asc"
+                                    type="radio"
+                                    name="mode"
+                                    value="ascending"
+                                    onChange={e => setModeValue(e.target.value)}
+                                />
+                            </ButtonModeLabel>
+
+                            <ButtonModeLabel htmlFor="mode-des">
+                                По убыванию
+                                <ButtonMode
+                                    id="mode-des"
+                                    type="radio"
+                                    name="mode"
+                                    value="descending"
+                                    onChange={e => setModeValue(e.target.value)}
+                                />
+                            </ButtonModeLabel>
+                        </Mode>
                     </Fieldset>
-                    <Mode>
-                        <ButtonMode type="button">По возврастанию</ButtonMode>
-                        <ButtonMode
-                            type="button"
-                            disabled
-                        >
-                            По убыванию
-                        </ButtonMode>
-                    </Mode>
+
                     <ButtonPlay
                         type="submit"
-                        onClick={() => router.push('/playground')}
+                        onClick={e => onButtonPlayClick(e)}
                     >
                         Играть
                     </ButtonPlay>
