@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
+import { useAppSelector } from '../../store/hooks';
+
 import { useLocationData } from '../hooks/useLocation';
-import { getRandomArrElement } from '../helpers/getRandomArrElement';
 
 import Header from './Header';
 import Footer from './Footer';
@@ -50,14 +51,12 @@ const Container = styled.div`
 const Layout = ({ children }: any) => {
     const [isModalVisible, setModalVisibleStatus] = useState<boolean>(false);
     const [backgroundIMG, setBackgroundIMG] = useState<string>('');
-    const [backgroundsCollection] = useState<string[]>([
-        '/images/background-template_1.png',
-        '/images/background-template_2.png',
-        '/images/background-template_3.png',
-        '/images/background-template_4.png'
-    ]);
 
     const { pathname } = useLocationData();
+
+    const { currentBackgroundCollection } = useAppSelector(
+        state => state.mainSlice
+    );
 
     // /. hooks
 
@@ -67,10 +66,10 @@ const Layout = ({ children }: any) => {
                 setBackgroundIMG('/images/background-template_settings.png');
                 break;
             case '/playground':
-                setBackgroundIMG(getRandomArrElement(backgroundsCollection));
+                setBackgroundIMG(currentBackgroundCollection.playgroundImage);
                 break;
         }
-    }, [pathname, backgroundsCollection]);
+    }, [pathname, currentBackgroundCollection]);
 
     // /. effects
 

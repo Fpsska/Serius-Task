@@ -12,6 +12,7 @@ interface mainSliceTypes {
     valueItemData: IvalueItem[];
     gameSettings: { [key: string]: string | number };
     backgroundsCollection: Ibackground[];
+    currentBackgroundCollection: Ibackground;
 }
 
 // /. interfaces
@@ -103,6 +104,7 @@ const initialState: mainSliceTypes = {
             barImage: '/images/bar-template_4.png'
         }
     ],
+    currentBackgroundCollection: { id: 0, playgroundImage: '', barImage: '' },
     gameSettings: {}
 };
 
@@ -143,6 +145,9 @@ const mainSlice = createSlice({
             }>
         ) {
             state.gameSettings = action.payload;
+        },
+        setCurrentBackCollection(state, action: PayloadAction<Ibackground>) {
+            state.currentBackgroundCollection = action.payload;
         }
     }
 });
@@ -150,7 +155,8 @@ const mainSlice = createSlice({
 export const {
     switchQuantityItemSelectedStatus,
     switchValueItemSelectedStatus,
-    saveGameSettingsData
+    saveGameSettingsData,
+    setCurrentBackCollection
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

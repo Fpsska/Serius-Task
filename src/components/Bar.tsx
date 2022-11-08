@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
-import { getRandomArrElement } from '../helpers/getRandomArrElement';
+import { useAppSelector } from '../../store/hooks';
 
 // /.imports
 
@@ -34,18 +34,16 @@ const BarListTemplate = styled.li`
 
 const Bar = () => {
     const [backgroundIMG, setBackgroundIMG] = useState<string>('');
-    const [backgroundsCollection] = useState<string[]>([
-        '/images/bar-template_1.png',
-        '/images/bar-template_2.png',
-        '/images/bar-template_3.png',
-        '/images/bar-template_4.png'
-    ]);
+
+    const { currentBackgroundCollection } = useAppSelector(
+        state => state.mainSlice
+    );
 
     // /. hooks
 
     useEffect(() => {
-        setBackgroundIMG(getRandomArrElement(backgroundsCollection));
-    }, [backgroundsCollection]);
+        setBackgroundIMG(currentBackgroundCollection.barImage);
+    }, [currentBackgroundCollection]);
 
     // /. effects
 

@@ -9,8 +9,11 @@ import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import {
     switchQuantityItemSelectedStatus,
     switchValueItemSelectedStatus,
-    saveGameSettingsData
+    saveGameSettingsData,
+    setCurrentBackCollection
 } from '../../store/mainSlice';
+
+import { getRandomArrElement } from '../helpers/getRandomArrElement';
 
 import { IvalueItem } from '../types/valueItemTypes';
 import { IquantityItem } from '../types/quantityItemTypes';
@@ -126,9 +129,12 @@ const StartPage = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
 
-    const { quantityItemData, valueItemData, gameSettings } = useAppSelector(
-        state => state.mainSlice
-    );
+    const {
+        quantityItemData,
+        valueItemData,
+        gameSettings,
+        backgroundsCollection
+    } = useAppSelector(state => state.mainSlice);
 
     // /. hooks
 
@@ -163,6 +169,12 @@ const StartPage = () => {
     };
 
     // /. functions
+
+    useEffect(() => {
+        dispatch(
+            setCurrentBackCollection(getRandomArrElement(backgroundsCollection))
+        );
+    }, [backgroundsCollection]);
 
     useEffect(() => {
         console.log('gameSettings', gameSettings);
