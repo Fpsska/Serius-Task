@@ -51,7 +51,7 @@ interface propTypes {
 // /. interfaces
 
 const Prompt = (props: propTypes) => {
-    const { role } = props;
+    const { role = 'ascending' } = props;
 
     const [promptText, setPromptText] = useState<string>('По возврастанию');
 

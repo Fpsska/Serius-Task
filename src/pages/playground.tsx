@@ -2,6 +2,8 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { useAppSelector } from '../../store/hooks';
+
 import Bar from '../components/Bar';
 import Prompt from '../components/Prompt';
 
@@ -39,6 +41,10 @@ const ItemsListTemplate = styled.li`
 // /. styled components
 
 const PlaygroundPage = () => {
+    const { gameSettings } = useAppSelector(state => state.mainSlice);
+
+    // /. hooks
+
     return (
         <Section>
             <Wrapper>
@@ -50,7 +56,7 @@ const PlaygroundPage = () => {
                     <ItemsListTemplate></ItemsListTemplate>
                 </ItemsList>
 
-                <Prompt role={'ascending'} />
+                <Prompt role={gameSettings.mode} />
 
                 <Bar />
             </Wrapper>

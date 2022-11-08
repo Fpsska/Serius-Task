@@ -3,6 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IquantityItem } from '../src/types/quantityItemTypes';
 import { IvalueItem } from '../src/types/valueItemTypes';
 
+import { Isettings } from '../src/types/gameSettingsTypes';
+
 import { Ibackground } from './../src/types/backgroundCollectionTypes';
 
 // /. imports
@@ -10,7 +12,7 @@ import { Ibackground } from './../src/types/backgroundCollectionTypes';
 interface mainSliceTypes {
     quantityItemData: IquantityItem[];
     valueItemData: IvalueItem[];
-    gameSettings: { [key: string]: string | number };
+    gameSettings: Isettings;
     backgroundsCollection: Ibackground[];
     currentBackgroundCollection: Ibackground;
 }
@@ -105,7 +107,7 @@ const initialState: mainSliceTypes = {
         }
     ],
     currentBackgroundCollection: { id: 0, playgroundImage: '', barImage: '' },
-    gameSettings: {}
+    gameSettings: { quantity: '', totalValue: '', mode: '' }
 };
 
 // /. initialState
@@ -136,14 +138,7 @@ const mainSlice = createSlice({
                     : (item.isSelected = false)
             );
         },
-        saveGameSettingsData(
-            state,
-            action: PayloadAction<{
-                quantity: string;
-                totalValue: string | number;
-                mode: string;
-            }>
-        ) {
+        saveGameSettingsData(state, action: PayloadAction<Isettings>) {
             state.gameSettings = action.payload;
         },
         setCurrentBackCollection(state, action: PayloadAction<Ibackground>) {
