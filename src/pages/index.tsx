@@ -4,6 +4,14 @@ import { useRouter } from 'next/router';
 
 import styled from '@emotion/styled';
 
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+
+import {
+    switchQuantityItemSelectedStatus,
+    switchValueItemSelectedStatus,
+    saveGameSettingsData
+} from '../../store/mainSlice';
+
 import { IvalueItem } from '../types/valueItemTypes';
 import { IquantityItem } from '../types/quantityItemTypes';
 
@@ -111,79 +119,16 @@ const InputCount = styled.input`
 // /. styled components
 
 const StartPage = () => {
-    const [quantityItemData, setQuantityItemData] = useState<IquantityItem[]>([
-        {
-            id: 1,
-            value: '2',
-            name: 'item-quantity',
-            isSelected: true
-        },
-        {
-            id: 2,
-            value: '3',
-            name: 'item-quantity',
-            isSelected: false
-        },
-        {
-            id: 3,
-            value: '4',
-            name: 'item-quantity',
-            isSelected: false
-        },
-        {
-            id: 4,
-            value: '5',
-            name: 'item-quantity',
-            isSelected: false
-        }
-    ]);
-    const [valueItemData, setValueItemData] = useState<IvalueItem[]>([
-        {
-            id: 1,
-            value: 'A',
-            name: 'item-value',
-            isSelected: true
-        },
-        {
-            id: 2,
-            value: 9,
-            name: 'item-value',
-            isSelected: false
-        },
-        {
-            id: 3,
-            value: 19,
-            name: 'item-value',
-            isSelected: false
-        },
-        {
-            id: 4,
-            value: 50,
-            name: 'item-value',
-            isSelected: false
-        },
-        {
-            id: 5,
-            value: 99,
-            name: 'item-value',
-            isSelected: false
-        },
-        {
-            id: 6,
-            value: 999,
-            name: 'item-value',
-            isSelected: false
-        }
-    ]);
-
     const [itemQuantityValue, setItemQuantityValue] = useState<string>('');
     const [itemValue, setItemValue] = useState<string>('');
     const [modeValue, setModeValue] = useState<string>('');
-    const [gameSettings, setGameSettings] = useState<{
-        [key: string]: string | number;
-    }>({});
 
     const router = useRouter();
+    const dispatch = useAppDispatch();
+
+    const { quantityItemData, valueItemData, gameSettings } = useAppSelector(
+        state => state.mainSlice
+    );
 
     // /. hooks
 
@@ -192,14 +137,7 @@ const StartPage = () => {
         id: number
     ): void => {
         setItemQuantityValue(e.target.value);
-        //
-        const newArr = [...quantityItemData];
-        newArr.map(item =>
-            item.id === id
-                ? (item.isSelected = true)
-                : (item.isSelected = false)
-        );
-        setQuantityItemData(newArr);
+        dispatch(switchQuantityItemSelectedStatus({ id }));
     };
 
     const onInputTotalValueChange = (
@@ -207,24 +145,19 @@ const StartPage = () => {
         id: number
     ): void => {
         setItemValue(e.target.value);
-        //
-        const newArr = [...valueItemData];
-        newArr.map(item =>
-            item.id === id
-                ? (item.isSelected = true)
-                : (item.isSelected = false)
-        );
-        setValueItemData(newArr);
+        dispatch(switchValueItemSelectedStatus({ id }));
     };
 
     const onButtonPlayClick = (e: React.SyntheticEvent): void => {
         e.preventDefault();
         //
-        setGameSettings({
-            quantity: itemQuantityValue || quantityItemData[0]?.value,
-            totalValue: itemValue || valueItemData[0]?.value,
-            mode: modeValue || 'ascending'
-        });
+        dispatch(
+            saveGameSettingsData({
+                quantity: itemQuantityValue || quantityItemData[0]?.value,
+                totalValue: itemValue || valueItemData[0]?.value,
+                mode: modeValue || 'ascending'
+            })
+        );
         //
         router.push('/playground');
     };
@@ -232,7 +165,7 @@ const StartPage = () => {
     // /. functions
 
     useEffect(() => {
-        console.log(gameSettings);
+        console.log('gameSettings', gameSettings);
     }, [gameSettings]);
 
     // /. effects

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IquantityItem } from '../src/types/quantityItemTypes';
 import { IvalueItem } from '../src/types/valueItemTypes';
@@ -111,9 +111,46 @@ const initialState: mainSliceTypes = {
 const mainSlice = createSlice({
     name: 'mainSlice',
     initialState,
-    reducers: {}
+    reducers: {
+        switchQuantityItemSelectedStatus(
+            state,
+            action: PayloadAction<{ id: number }>
+        ) {
+            const { id } = action.payload;
+            state.quantityItemData.map(item =>
+                item.id === id
+                    ? (item.isSelected = true)
+                    : (item.isSelected = false)
+            );
+        },
+        switchValueItemSelectedStatus(
+            state,
+            action: PayloadAction<{ id: number }>
+        ) {
+            const { id } = action.payload;
+            state.valueItemData.map(item =>
+                item.id === id
+                    ? (item.isSelected = true)
+                    : (item.isSelected = false)
+            );
+        },
+        saveGameSettingsData(
+            state,
+            action: PayloadAction<{
+                quantity: string;
+                totalValue: string | number;
+                mode: string;
+            }>
+        ) {
+            state.gameSettings = action.payload;
+        }
+    }
 });
 
-// export const { } = mainSlice.actions;
+export const {
+    switchQuantityItemSelectedStatus,
+    switchValueItemSelectedStatus,
+    saveGameSettingsData
+} = mainSlice.actions;
 
 export default mainSlice.reducer;
