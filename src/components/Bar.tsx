@@ -8,12 +8,12 @@ import { useAppSelector } from '../../store/hooks';
 
 const StyledBar = styled.div`
     background-repeat: no-repeat;
-    background-size: 200% auto;
+    background-size: 100%;
     background-position: center;
-    background-color: #444;
+    background-color: transparent;
     border-radius: 20px;
-    padding: 20px;
-    min-height: 70px;
+    padding: 46px 30px;
+    min-height: 222px;
 `;
 
 const BarList = styled.ul`

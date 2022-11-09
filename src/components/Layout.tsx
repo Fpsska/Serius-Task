@@ -17,7 +17,6 @@ const Main = styled.main`
     overflow: hidden;
     width: 100vw;
     height: 100vh;
-    // padding: 90px 140px;
     background-color: #a2d3da;
     background-size: cover;
     background-position: center;
@@ -40,9 +39,9 @@ const Overlay = styled.div`
 `;
 
 const Container = styled.div`
-    max-width: 1024px;
+    max-width: 966px;
     height: 100%;
-    padding: 0 45px;
+    padding: 0 40px;
     margin: 0 auto;
 `;
 
