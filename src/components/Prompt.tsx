@@ -7,15 +7,15 @@ import styled from '@emotion/styled';
 const StyledPrompt = styled.div<PromptStyledPromptProps>`
     display: flex;
     align-items: center;
-    margin: 40px 0 20px 0;
+    margin: 58px 0 20px 0;
     justify-content: ${prop => prop.role === 'descending' && 'flex-end'};
 `;
 
 const PromptText = styled.span`
     color: var(--white-color);
     font-size: 26px;
-    text-shadow: 1px 1px #000, -1px 1px #000, 1px -1px #000, -1px -1px #000,
-        1px 1px 5px #000;
+    text-shadow: 2px 2px #000, -2px 2px #000, 2px -2px #000, -2px -2px #000,
+        2px 2px 5px #000;
     z-index: 2;
 `;
 
