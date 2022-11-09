@@ -88,25 +88,138 @@ const initialState: mainSliceTypes = {
         {
             id: 1,
             playgroundImage: '/images/background-template_1.png',
-            barImage: '/images/bar-template_1.png'
+            barImage: '/images/bar-template_1.png',
+            interactiveItems: [
+                {
+                    id: 1,
+                    image: '/svg/candy-item_1.svg',
+                    count: 42
+                },
+                {
+                    id: 2,
+                    image: '/svg/candy-item_2.svg',
+                    count: 46
+                },
+                {
+                    id: 3,
+                    image: '/svg/candy-item_3.svg',
+                    count: 112
+                },
+                {
+                    id: 4,
+                    image: '/svg/candy-item_3.svg',
+                    count: 57
+                },
+                {
+                    id: 5,
+                    image: '/svg/candy-item_4.svg',
+                    count: 64
+                }
+            ]
         },
         {
             id: 2,
             playgroundImage: '/images/background-template_2.png',
-            barImage: '/images/bar-template_2.png'
+            barImage: '/images/bar-template_2.png',
+            interactiveItems: [
+                {
+                    id: 1,
+                    image: '/svg/coin-item_1.svg',
+                    count: 22
+                },
+                {
+                    id: 2,
+                    image: '/svg/coin-item_2.svg',
+                    count: 36
+                },
+                {
+                    id: 3,
+                    image: '/svg/coin-item_2.svg',
+                    count: 115
+                },
+                {
+                    id: 4,
+                    image: '/svg/candy-item_3.svg',
+                    count: 42
+                },
+                {
+                    id: 5,
+                    image: '/svg/candy-item_4.svg',
+                    count: 56
+                }
+            ]
         },
         {
             id: 3,
             playgroundImage: '/images/background-template_3.png',
-            barImage: '/images/bar-template_3.png'
+            barImage: '/images/bar-template_3.png',
+            interactiveItems: [
+                {
+                    id: 1,
+                    image: '/svg/toy-item_1.svg',
+                    count: 42
+                },
+                {
+                    id: 2,
+                    image: '/svg/toy-item_2.svg',
+                    count: 46
+                },
+                {
+                    id: 3,
+                    image: '/svg/toy-item_3.svg',
+                    count: 112
+                },
+                {
+                    id: 4,
+                    image: '/svg/toy-item_4.svg',
+                    count: 74
+                },
+                {
+                    id: 5,
+                    image: '/svg/toy-item_3.svg',
+                    count: 56
+                }
+            ]
         },
         {
             id: 4,
             playgroundImage: '/images/background-template_4.png',
-            barImage: '/images/bar-template_4.png'
+            barImage: '/images/bar-template_4.png',
+            interactiveItems: [
+                {
+                    id: 1,
+                    image: '/svg/flower-item_1.svg',
+                    count: 28
+                },
+                {
+                    id: 2,
+                    image: '/svg/flower-item_2.svg',
+                    count: 36
+                },
+                {
+                    id: 3,
+                    image: '/svg/flower-item_3.svg',
+                    count: 112
+                },
+                {
+                    id: 4,
+                    image: '/svg/flower-item_2.svg',
+                    count: 45
+                },
+                {
+                    id: 5,
+                    image: '/svg/flower-item_4.svg',
+                    count: 56
+                }
+            ]
         }
     ],
-    currentBackgroundCollection: { id: 0, playgroundImage: '', barImage: '' },
+    currentBackgroundCollection: {
+        id: 0,
+        playgroundImage: '',
+        barImage: '',
+        interactiveItems: []
+    },
     gameSettings: { quantity: '', totalValue: '', mode: '' }
 };
 
@@ -116,7 +229,7 @@ const mainSlice = createSlice({
     name: 'mainSlice',
     initialState,
     reducers: {
-        switchQuantityItemSelectedStatus(
+        switchQuantityinteractiveItemselectedStatus(
             state,
             action: PayloadAction<{ id: number }>
         ) {
@@ -127,7 +240,7 @@ const mainSlice = createSlice({
                     : (item.isSelected = false)
             );
         },
-        switchValueItemSelectedStatus(
+        switchValueinteractiveItemselectedStatus(
             state,
             action: PayloadAction<{ id: number }>
         ) {
@@ -148,8 +261,8 @@ const mainSlice = createSlice({
 });
 
 export const {
-    switchQuantityItemSelectedStatus,
-    switchValueItemSelectedStatus,
+    switchQuantityinteractiveItemselectedStatus,
+    switchValueinteractiveItemselectedStatus,
     saveGameSettingsData,
     setCurrentBackCollection
 } = mainSlice.actions;

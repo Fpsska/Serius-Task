@@ -6,6 +6,8 @@ import styled from '@emotion/styled';
 
 import { useAppSelector } from '../../store/hooks';
 
+import { Iinteractive } from '../types/backgroundCollectionTypes';
+
 import Bar from '../components/Bar';
 import Prompt from '../components/Prompt';
 
@@ -76,7 +78,9 @@ const ImageWrapper = styled.div`
 // /. styled components
 
 const PlaygroundPage = () => {
-    const { gameSettings } = useAppSelector(state => state.mainSlice);
+    const { gameSettings, currentBackgroundCollection } = useAppSelector(
+        state => state.mainSlice
+    );
 
     // /. hooks
 
@@ -84,66 +88,24 @@ const PlaygroundPage = () => {
         <Section>
             <Wrapper>
                 <ItemsList>
-                    <ItemsListTemplate>
-                        <ImageWrapper data-count="42">
-                            <Image
-                                src="/svg/toy-item_1.svg"
-                                alt="toy"
-                                width={158}
-                                height={168}
-                                quality={100}
-                                objectFit="contain"
-                            />
-                        </ImageWrapper>
-                    </ItemsListTemplate>
-                    <ItemsListTemplate>
-                        <ImageWrapper data-count="46">
-                            <Image
-                                src="/svg/toy-item_2.svg"
-                                alt="toy"
-                                width={158}
-                                height={168}
-                                quality={100}
-                                objectFit="contain"
-                            />
-                        </ImageWrapper>
-                    </ItemsListTemplate>
-                    <ItemsListTemplate>
-                        <ImageWrapper data-count="112">
-                            <Image
-                                src="/svg/toy-item_3.svg"
-                                alt="toy"
-                                width={158}
-                                height={162}
-                                quality={100}
-                                objectFit="contain"
-                            />
-                        </ImageWrapper>
-                    </ItemsListTemplate>
-                    <ItemsListTemplate>
-                        <ImageWrapper data-count="74">
-                            <Image
-                                src="/svg/toy-item_4.svg"
-                                alt="toy"
-                                width={158}
-                                height={170}
-                                quality={100}
-                                objectFit="contain"
-                            />
-                        </ImageWrapper>
-                    </ItemsListTemplate>
-                    <ItemsListTemplate>
-                        <ImageWrapper data-count="56">
-                            <Image
-                                src="/svg/toy-item_3.svg"
-                                alt="toy"
-                                width={158}
-                                height={162}
-                                quality={100}
-                                objectFit="contain"
-                            />
-                        </ImageWrapper>
-                    </ItemsListTemplate>
+                    {currentBackgroundCollection.interactiveItems.map(
+                        (template: Iinteractive) => {
+                            return (
+                                <ItemsListTemplate key={template.id}>
+                                    <ImageWrapper data-count={template.count}>
+                                        <Image
+                                            src={template.image}
+                                            alt="toy"
+                                            width={158}
+                                            height={168}
+                                            quality={100}
+                                            objectFit="contain"
+                                        />
+                                    </ImageWrapper>
+                                </ItemsListTemplate>
+                            );
+                        }
+                    )}
                 </ItemsList>
 
                 <Prompt role={gameSettings.mode} />
