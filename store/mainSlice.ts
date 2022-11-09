@@ -139,12 +139,12 @@ const initialState: mainSliceTypes = {
                 },
                 {
                     id: 4,
-                    image: '/svg/candy-item_3.svg',
+                    image: '/svg/coin-item_3.svg',
                     count: 42
                 },
                 {
                     id: 5,
-                    image: '/svg/candy-item_4.svg',
+                    image: '/svg/coin-item_3.svg',
                     count: 56
                 }
             ]
@@ -198,7 +198,7 @@ const initialState: mainSliceTypes = {
                 },
                 {
                     id: 3,
-                    image: '/svg/flower-item_3.svg',
+                    image: '/svg/flower-item_4.svg',
                     count: 112
                 },
                 {
@@ -208,7 +208,7 @@ const initialState: mainSliceTypes = {
                 },
                 {
                     id: 5,
-                    image: '/svg/flower-item_4.svg',
+                    image: '/svg/flower-item_5.svg',
                     count: 56
                 }
             ]
@@ -229,7 +229,7 @@ const mainSlice = createSlice({
     name: 'mainSlice',
     initialState,
     reducers: {
-        switchQuantityinteractiveItemselectedStatus(
+        switchQuantityItemSelectedStatus(
             state,
             action: PayloadAction<{ id: number }>
         ) {
@@ -240,7 +240,7 @@ const mainSlice = createSlice({
                     : (item.isSelected = false)
             );
         },
-        switchValueinteractiveItemselectedStatus(
+        switchValueItemSelectedStatus(
             state,
             action: PayloadAction<{ id: number }>
         ) {
@@ -261,8 +261,8 @@ const mainSlice = createSlice({
 });
 
 export const {
-    switchQuantityinteractiveItemselectedStatus,
-    switchValueinteractiveItemselectedStatus,
+    switchQuantityItemSelectedStatus,
+    switchValueItemSelectedStatus,
     saveGameSettingsData,
     setCurrentBackCollection
 } = mainSlice.actions;
