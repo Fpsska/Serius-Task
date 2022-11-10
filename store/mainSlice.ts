@@ -1,11 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 
 import { IquantityItem } from '../src/types/quantityItemTypes';
 import { IvalueItem } from '../src/types/valueItemTypes';
 
 import { Isettings } from '../src/types/gameSettingsTypes';
 
-import { Ibackground } from './../src/types/backgroundCollectionTypes';
+import {
+    Ibackground,
+    Iordered
+} from './../src/types/backgroundCollectionTypes';
 
 // /. imports
 
@@ -15,6 +18,7 @@ interface mainSliceTypes {
     gameSettings: Isettings;
     backgroundsCollection: Ibackground[];
     currentBackgroundCollection: Ibackground;
+    orderedData: Iordered[];
 }
 
 // /. interfaces
@@ -220,6 +224,13 @@ const initialState: mainSliceTypes = {
         barImage: '',
         interactiveItems: []
     },
+    orderedData: [
+        { id: 1, image: '', count: 0, isSelected: false },
+        { id: 2, image: '', count: 0, isSelected: false },
+        { id: 3, image: '', count: 0, isSelected: false },
+        { id: 4, image: '', count: 0, isSelected: false },
+        { id: 5, image: '', count: 0, isSelected: false }
+    ],
     gameSettings: { quantity: '', totalValue: '', mode: '' }
 };
 
@@ -256,6 +267,28 @@ const mainSlice = createSlice({
         },
         setCurrentBackCollection(state, action: PayloadAction<Ibackground>) {
             state.currentBackgroundCollection = action.payload;
+        },
+        setOrderedData(
+            state,
+            action: PayloadAction<{ itemID: number; barID: number }>
+        ) {
+            const { itemID, barID } = action.payload;
+
+            const targetItem =
+                state.currentBackgroundCollection.interactiveItems.find(
+                    item => item.id === itemID
+                );
+            const barItemSlot = state.orderedData.find(
+                item => item.id === barID
+            );
+            if (targetItem && barItemSlot) {
+                console.log('targetItem', current(targetItem));
+                barItemSlot.image = targetItem.image;
+                barItemSlot.count = targetItem.count;
+                barItemSlot.isSelected = true;
+                console.log('barItemSlot', current(barItemSlot));
+                // console.log(current(state.orderedData));
+            }
         }
     }
 });
@@ -264,7 +297,8 @@ export const {
     switchQuantityItemSelectedStatus,
     switchValueItemSelectedStatus,
     saveGameSettingsData,
-    setCurrentBackCollection
+    setCurrentBackCollection,
+    setOrderedData
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

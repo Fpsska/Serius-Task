@@ -176,9 +176,9 @@ const StartPage = () => {
         );
     }, [backgroundsCollection]);
 
-    useEffect(() => {
-        console.log('gameSettings', gameSettings);
-    }, [gameSettings]);
+    // useEffect(() => {
+    //     console.log('gameSettings', gameSettings);
+    // }, [gameSettings]);
 
     // /. effects
 

@@ -10,3 +10,7 @@ export interface Ibackground {
     barImage: string;
     interactiveItems: Iinteractive[];
 }
+
+export interface Iordered extends Iinteractive {
+    isSelected: boolean;
+}

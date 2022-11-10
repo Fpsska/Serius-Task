@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -48,6 +48,7 @@ const ImageWrapper = styled.div`
 // /. styled components
 
 interface propTypes {
+    id?: number;
     count: number;
     image: string;
 }
@@ -55,13 +56,32 @@ interface propTypes {
 // /. intefaces
 
 const InteractiveItemTemplate = (props: propTypes) => {
-    const { count, image } = props;
+    const { id, count, image } = props;
 
     const [imageSrc, setImageSrc] = useState<string>(image);
     const [isImageErr, setImageErrStatus] = useState<boolean>(false);
 
+    // /. hooks
+
+    const onDragStartHandler = (e: any): void => {
+        console.log('Drag has started!');
+        e.dataTransfer.setData('itemID', id);
+    };
+
+    // /. functions
+
+    useEffect(() => {
+        setImageSrc(image);
+    }, [image]);
+
+    // effects
+
     return (
-        <ImageWrapper data-count={count}>
+        <ImageWrapper
+            data-count={count}
+            draggable
+            onDragStart={e => onDragStartHandler(e)}
+        >
             <Image
                 src={imageSrc}
                 alt="interactive item"

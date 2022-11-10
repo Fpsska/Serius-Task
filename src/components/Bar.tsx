@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, DragEvent } from 'react';
 
 import styled from '@emotion/styled';
 
-import { useAppSelector } from '../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+
+import { setOrderedData } from '../../store/mainSlice';
+
+import { Iordered } from '../types/backgroundCollectionTypes';
 
 import InteractiveItemTemplate from './InteractiveItemTemplate';
 
@@ -68,11 +72,31 @@ type BarListTemplateProps = {
 const Bar = () => {
     const [backgroundIMG, setBackgroundIMG] = useState<string>('');
 
-    const { currentBackgroundCollection } = useAppSelector(
+    const { currentBackgroundCollection, orderedData } = useAppSelector(
         state => state.mainSlice
     );
 
+    const dispatch = useAppDispatch();
+
     // /. hooks
+
+    const onDragOverHandler = (
+        e: DragEvent<HTMLLIElement>,
+        id: number
+    ): void => {
+        e.preventDefault();
+        console.log('Draggin over now!');
+    };
+
+    const onDropHandler = (e: DragEvent<HTMLLIElement>, id: number): void => {
+        e.preventDefault();
+        console.log('You have dropped! ');
+        //
+        const targetItemID = +e.dataTransfer.getData('itemID');
+        dispatch(setOrderedData({ barID: id, itemID: targetItemID }));
+    };
+
+    // /. functions
 
     useEffect(() => {
         setBackgroundIMG(currentBackgroundCollection.barImage);
@@ -83,52 +107,23 @@ const Bar = () => {
     return (
         <StyledBar style={{ backgroundImage: `url(${backgroundIMG})` }}>
             <BarList>
-                <BarListTemplate isSelected>
-                    <InteractiveItemTemplate
-                        count={
-                            currentBackgroundCollection.interactiveItems[0]
-                                .count
-                        }
-                        image={'/'}
-                    />
-                </BarListTemplate>
-                <BarListTemplate></BarListTemplate>
-                <BarListTemplate isSelected>
-                    <InteractiveItemTemplate
-                        count={
-                            currentBackgroundCollection.interactiveItems[2]
-                                .count
-                        }
-                        image={
-                            currentBackgroundCollection.interactiveItems[2]
-                                .image
-                        }
-                    />
-                </BarListTemplate>
-                <BarListTemplate isSelected>
-                    <InteractiveItemTemplate
-                        count={
-                            currentBackgroundCollection.interactiveItems[3]
-                                .count
-                        }
-                        image={
-                            currentBackgroundCollection.interactiveItems[3]
-                                .image
-                        }
-                    />
-                </BarListTemplate>
-                <BarListTemplate isSelected>
-                    <InteractiveItemTemplate
-                        count={
-                            currentBackgroundCollection.interactiveItems[4]
-                                .count
-                        }
-                        image={
-                            currentBackgroundCollection.interactiveItems[4]
-                                .image
-                        }
-                    />
-                </BarListTemplate>
+                {orderedData.map((template: Iordered) => {
+                    return (
+                        <BarListTemplate
+                            isSelected={template.isSelected}
+                            key={template.id}
+                            onDragOver={e => onDragOverHandler(e, template.id)}
+                            onDrop={e => onDropHandler(e, template.id)}
+                        >
+                            {template.isSelected && (
+                                <InteractiveItemTemplate
+                                    count={template.count}
+                                    image={template.image}
+                                />
+                            )}
+                        </BarListTemplate>
+                    );
+                })}
             </BarList>
         </StyledBar>
     );
