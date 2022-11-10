@@ -29,8 +29,6 @@ const BarList = styled.ul`
 `;
 
 const BarListTemplate = styled.li<BarListTemplateProps>`
-    // height: ${props => (props.isSelected ? 'auto' : '130px')};
-    // max-width: ${props => (props.isSelected ? 'auto' : '130px')};
     height: 130px;
     max-width: 130px;
     border-radius: 100%;
@@ -80,10 +78,7 @@ const Bar = () => {
 
     // /. hooks
 
-    const onDragOverHandler = (
-        e: DragEvent<HTMLLIElement>,
-        id: number
-    ): void => {
+    const onDragOverHandler = (e: DragEvent<HTMLLIElement>): void => {
         e.preventDefault();
         console.log('Draggin over now!');
     };
@@ -112,7 +107,8 @@ const Bar = () => {
                         <BarListTemplate
                             isSelected={template.isSelected}
                             key={template.id}
-                            onDragOver={e => onDragOverHandler(e, template.id)}
+                            s
+                            onDragOver={e => onDragOverHandler(e)}
                             onDrop={e => onDropHandler(e, template.id)}
                         >
                             {template.isSelected && (

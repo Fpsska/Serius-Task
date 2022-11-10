@@ -22,6 +22,7 @@ const ImageWrapper = styled.div`
         font-size: 56px;
         color: var(--white-color);
         font-weight: 400;
+        pointer-events: none;
 
         text-shadow: rgb(36, 37, 70) 3px 0px 0px,
             rgb(36, 37, 70) 2.83487px 0.981584px 0px,
@@ -78,8 +79,8 @@ const InteractiveItemTemplate = (props: propTypes) => {
 
     return (
         <ImageWrapper
-            data-count={count}
             draggable
+            data-count={count}
             onDragStart={e => onDragStartHandler(e)}
         >
             <Image
@@ -88,13 +89,13 @@ const InteractiveItemTemplate = (props: propTypes) => {
                 width={158}
                 height={168}
                 quality={100}
-                onError={() => {
-                    setImageErrStatus(true);
-                    setImageSrc('https://fakeimg.pl/130x130/ccc/444/');
-                }}
                 style={{
                     borderRadius: isImageErr ? '100%' : 'none',
                     objectFit: isImageErr ? 'none' : 'contain'
+                }}
+                onError={() => {
+                    setImageErrStatus(true);
+                    setImageSrc('https://fakeimg.pl/130x130/ccc/444/');
                 }}
             />
         </ImageWrapper>

@@ -282,11 +282,11 @@ const mainSlice = createSlice({
                 item => item.id === barID
             );
             if (targetItem && barItemSlot) {
-                console.log('targetItem', current(targetItem));
+                // console.log('targetItem', current(targetItem));
                 barItemSlot.image = targetItem.image;
                 barItemSlot.count = targetItem.count;
                 barItemSlot.isSelected = true;
-                console.log('barItemSlot', current(barItemSlot));
+                // console.log('barItemSlot', current(barItemSlot));
                 // console.log(current(state.orderedData));
             }
         }
