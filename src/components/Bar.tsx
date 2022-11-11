@@ -56,6 +56,7 @@ const BarListTemplate = styled.li<BarListTemplateProps>`
     img {
         width: 130px;
         height: 130px;
+        pointer-events: none;
     }
 `;
 
@@ -78,17 +79,25 @@ const Bar = () => {
 
     // /. hooks
 
-    const onDragOverHandler = (e: DragEvent<HTMLLIElement>): void => {
+    const onDragOverHandler = (e: any): void => {
         e.preventDefault();
         console.log('Draggin over now!');
+        //
+        e.target.style.boxShadow = 'inset 0px 4px 25px rgba(0, 0, 0, 0.55)';
     };
 
-    const onDropHandler = (e: DragEvent<HTMLLIElement>, id: number): void => {
+    const onDropHandler = (e: any, id: number): void => {
         e.preventDefault();
         console.log('You have dropped! ');
         //
         const targetItemID = +e.dataTransfer.getData('itemID');
         dispatch(setOrderedData({ barID: id, itemID: targetItemID }));
+        //
+        e.target.style.boxShadow = 'none';
+    };
+
+    const onDragLeaveHandler = (e: any): void => {
+        e.target.style.boxShadow = 'inset 0px 4px 25px rgba(0, 0, 0, 0.25)';
     };
 
     // /. functions
@@ -107,9 +116,9 @@ const Bar = () => {
                         <BarListTemplate
                             isSelected={template.isSelected}
                             key={template.id}
-                            s
                             onDragOver={e => onDragOverHandler(e)}
                             onDrop={e => onDropHandler(e, template.id)}
+                            onDragLeave={e => onDragLeaveHandler(e)}
                         >
                             {template.isSelected && (
                                 <InteractiveItemTemplate
