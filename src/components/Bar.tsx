@@ -1,10 +1,13 @@
-import React, { useState, useEffect, DragEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
-import { setOrderedData } from '../../store/mainSlice';
+import {
+    setOrderedData,
+    removeCurrentItemFromPlayground
+} from '../../store/mainSlice';
 
 import { Iordered } from '../types/backgroundCollectionTypes';
 
@@ -96,6 +99,7 @@ const Bar = () => {
         //
         const targetItemID = +e.dataTransfer.getData('itemID');
         dispatch(setOrderedData({ barID: id, itemID: targetItemID }));
+        dispatch(removeCurrentItemFromPlayground({ itemID: targetItemID }));
         //
         e.target.style.boxShadow = 'none';
     };

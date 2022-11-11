@@ -2,6 +2,7 @@ export interface Iinteractive {
     id: number;
     image: string;
     count: number;
+    isSelected: boolean;
 }
 
 export interface Ibackground {

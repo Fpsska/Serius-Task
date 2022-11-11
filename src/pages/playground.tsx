@@ -69,7 +69,11 @@ const PlaygroundPage = () => {
                                 <InteractiveItemTemplateWrapper
                                     key={template.id}
                                 >
-                                    <InteractiveItemTemplate {...template} />
+                                    {!template.isSelected && (
+                                        <InteractiveItemTemplate
+                                            {...template}
+                                        />
+                                    )}
                                 </InteractiveItemTemplateWrapper>
                             );
                         }

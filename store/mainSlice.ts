@@ -97,27 +97,32 @@ const initialState: mainSliceTypes = {
                 {
                     id: 1,
                     image: '/svg/candy-item_1.svg',
-                    count: 42
+                    count: 42,
+                    isSelected: false
                 },
                 {
                     id: 2,
                     image: '/svg/candy-item_2.svg',
-                    count: 46
+                    count: 46,
+                    isSelected: false
                 },
                 {
                     id: 3,
                     image: '/svg/candy-item_3.svg',
-                    count: 112
+                    count: 112,
+                    isSelected: false
                 },
                 {
                     id: 4,
                     image: '/svg/candy-item_3.svg',
-                    count: 57
+                    count: 57,
+                    isSelected: false
                 },
                 {
                     id: 5,
                     image: '/svg/candy-item_4.svg',
-                    count: 64
+                    count: 64,
+                    isSelected: false
                 }
             ]
         },
@@ -129,27 +134,32 @@ const initialState: mainSliceTypes = {
                 {
                     id: 1,
                     image: '/svg/coin-item_1.svg',
-                    count: 22
+                    count: 22,
+                    isSelected: false
                 },
                 {
                     id: 2,
                     image: '/svg/coin-item_2.svg',
-                    count: 36
+                    count: 36,
+                    isSelected: false
                 },
                 {
                     id: 3,
                     image: '/svg/coin-item_2.svg',
-                    count: 115
+                    count: 115,
+                    isSelected: false
                 },
                 {
                     id: 4,
                     image: '/svg/coin-item_3.svg',
-                    count: 42
+                    count: 42,
+                    isSelected: false
                 },
                 {
                     id: 5,
                     image: '/svg/coin-item_3.svg',
-                    count: 56
+                    count: 56,
+                    isSelected: false
                 }
             ]
         },
@@ -161,27 +171,32 @@ const initialState: mainSliceTypes = {
                 {
                     id: 1,
                     image: '/svg/toy-item_1.svg',
-                    count: 42
+                    count: 42,
+                    isSelected: false
                 },
                 {
                     id: 2,
                     image: '/svg/toy-item_2.svg',
-                    count: 46
+                    count: 46,
+                    isSelected: false
                 },
                 {
                     id: 3,
                     image: '/svg/toy-item_3.svg',
-                    count: 112
+                    count: 112,
+                    isSelected: false
                 },
                 {
                     id: 4,
                     image: '/svg/toy-item_4.svg',
-                    count: 74
+                    count: 74,
+                    isSelected: false
                 },
                 {
                     id: 5,
                     image: '/svg/toy-item_3.svg',
-                    count: 56
+                    count: 56,
+                    isSelected: false
                 }
             ]
         },
@@ -193,27 +208,32 @@ const initialState: mainSliceTypes = {
                 {
                     id: 1,
                     image: '/svg/flower-item_1.svg',
-                    count: 28
+                    count: 28,
+                    isSelected: false
                 },
                 {
                     id: 2,
                     image: '/svg/flower-item_2.svg',
-                    count: 36
+                    count: 36,
+                    isSelected: false
                 },
                 {
                     id: 3,
                     image: '/svg/flower-item_4.svg',
-                    count: 112
+                    count: 112,
+                    isSelected: false
                 },
                 {
                     id: 4,
                     image: '/svg/flower-item_2.svg',
-                    count: 45
+                    count: 45,
+                    isSelected: false
                 },
                 {
                     id: 5,
                     image: '/svg/flower-item_5.svg',
-                    count: 56
+                    count: 56,
+                    isSelected: false
                 }
             ]
         }
@@ -289,6 +309,19 @@ const mainSlice = createSlice({
                 // console.log('barItemSlot', current(barItemSlot));
                 // console.log(current(state.orderedData));
             }
+        },
+        removeCurrentItemFromPlayground(
+            state,
+            action: PayloadAction<{ itemID: number }>
+        ) {
+            const { itemID } = action.payload;
+            const targetItem =
+                state.currentBackgroundCollection.interactiveItems.find(
+                    item => item.id === itemID
+                );
+            if (targetItem) {
+                targetItem.isSelected = true;
+            }
         }
     }
 });
@@ -298,7 +331,8 @@ export const {
     switchValueItemSelectedStatus,
     saveGameSettingsData,
     setCurrentBackCollection,
-    setOrderedData
+    setOrderedData,
+    removeCurrentItemFromPlayground
 } = mainSlice.actions;
 
 export default mainSlice.reducer;
