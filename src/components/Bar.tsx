@@ -83,7 +83,10 @@ const Bar = () => {
         e.preventDefault();
         console.log('Draggin over now!');
         //
-        e.target.style.boxShadow = 'inset 0px 4px 25px rgba(0, 0, 0, 0.55)';
+        if (!e.target.childElementCount) {
+            // forbid to add styles when item is already selected
+            e.target.style.boxShadow = 'inset 0px 4px 25px rgba(0, 0, 0, 0.55)';
+        }
     };
 
     const onDropHandler = (e: any, id: number): void => {
@@ -97,7 +100,10 @@ const Bar = () => {
     };
 
     const onDragLeaveHandler = (e: any): void => {
-        e.target.style.boxShadow = 'inset 0px 4px 25px rgba(0, 0, 0, 0.25)';
+        if (!e.target.childElementCount) {
+            // forbid to add styles when item is already selected
+            e.target.style.boxShadow = 'inset 0px 4px 25px rgba(0, 0, 0, 0.25)';
+        }
     };
 
     // /. functions
