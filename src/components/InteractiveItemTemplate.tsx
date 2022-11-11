@@ -10,6 +10,7 @@ const ImageWrapper = styled.div`
     position: relative;
     height: min-content;
     flex-shrink: 0;
+    transform: translate(0, 0);
 
     &::before {
         content: attr(data-count);
@@ -22,7 +23,6 @@ const ImageWrapper = styled.div`
         font-size: 56px;
         color: var(--white-color);
         font-weight: 400;
-        pointer-events: none;
 
         text-shadow: rgb(36, 37, 70) 3px 0px 0px,
             rgb(36, 37, 70) 2.83487px 0.981584px 0px,
