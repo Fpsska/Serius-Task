@@ -72,7 +72,15 @@ type BarListTemplateProps = {
 
 // /. types
 
-const Bar = () => {
+interface propTypes {
+    onDragStartHandler?: (arg1: any, arg2: number) => void;
+}
+
+// /. interfaces
+
+const Bar = (props: propTypes) => {
+    const { onDragStartHandler } = props;
+
     const [backgroundIMG, setBackgroundIMG] = useState<string>('');
 
     const { currentBackgroundCollection, orderedData } = useAppSelector(
@@ -105,6 +113,7 @@ const Bar = () => {
     };
 
     const onDragLeaveHandler = (e: any): void => {
+        console.log('You leave out of area');
         if (!e.target.childElementCount) {
             // forbid to add styles when item is already selected
             e.target.style.boxShadow = 'inset 0px 4px 25px rgba(0, 0, 0, 0.25)';
@@ -133,8 +142,8 @@ const Bar = () => {
                         >
                             {template.isSelected && (
                                 <InteractiveItemTemplate
-                                    count={template.count}
-                                    image={template.image}
+                                    {...template}
+                                    onDragStartHandler={onDragStartHandler}
                                 />
                             )}
                         </BarListTemplate>

@@ -98,31 +98,31 @@ const initialState: mainSliceTypes = {
                     id: 1,
                     image: '/svg/candy-item_1.svg',
                     count: 42,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 2,
                     image: '/svg/candy-item_2.svg',
                     count: 46,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 3,
                     image: '/svg/candy-item_3.svg',
                     count: 112,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 4,
                     image: '/svg/candy-item_3.svg',
                     count: 57,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 5,
                     image: '/svg/candy-item_4.svg',
                     count: 64,
-                    isSelected: false
+                    isSelected: true
                 }
             ]
         },
@@ -135,31 +135,31 @@ const initialState: mainSliceTypes = {
                     id: 1,
                     image: '/svg/coin-item_1.svg',
                     count: 22,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 2,
                     image: '/svg/coin-item_2.svg',
                     count: 36,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 3,
                     image: '/svg/coin-item_2.svg',
                     count: 115,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 4,
                     image: '/svg/coin-item_3.svg',
                     count: 42,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 5,
                     image: '/svg/coin-item_3.svg',
                     count: 56,
-                    isSelected: false
+                    isSelected: true
                 }
             ]
         },
@@ -172,31 +172,31 @@ const initialState: mainSliceTypes = {
                     id: 1,
                     image: '/svg/toy-item_1.svg',
                     count: 42,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 2,
                     image: '/svg/toy-item_2.svg',
                     count: 46,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 3,
                     image: '/svg/toy-item_3.svg',
                     count: 112,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 4,
                     image: '/svg/toy-item_4.svg',
                     count: 74,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 5,
                     image: '/svg/toy-item_3.svg',
                     count: 56,
-                    isSelected: false
+                    isSelected: true
                 }
             ]
         },
@@ -209,31 +209,31 @@ const initialState: mainSliceTypes = {
                     id: 1,
                     image: '/svg/flower-item_1.svg',
                     count: 28,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 2,
                     image: '/svg/flower-item_2.svg',
                     count: 36,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 3,
                     image: '/svg/flower-item_4.svg',
                     count: 112,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 4,
                     image: '/svg/flower-item_2.svg',
                     count: 45,
-                    isSelected: false
+                    isSelected: true
                 },
                 {
                     id: 5,
                     image: '/svg/flower-item_5.svg',
                     count: 56,
-                    isSelected: false
+                    isSelected: true
                 }
             ]
         }
@@ -289,6 +289,7 @@ const mainSlice = createSlice({
             state.currentBackgroundCollection = action.payload;
         },
         setOrderedData(
+            // include logic of removeCurrentItemFromPlayground AC
             state,
             action: PayloadAction<{ itemID: number; barID: number }>
         ) {
@@ -302,12 +303,9 @@ const mainSlice = createSlice({
                 item => item.id === barID
             );
             if (targetItem && barItemSlot) {
-                // console.log('targetItem', current(targetItem));
                 barItemSlot.image = targetItem.image;
                 barItemSlot.count = targetItem.count;
                 barItemSlot.isSelected = true;
-                // console.log('barItemSlot', current(barItemSlot));
-                // console.log(current(state.orderedData));
             }
         },
         removeCurrentItemFromPlayground(
@@ -320,7 +318,26 @@ const mainSlice = createSlice({
                     item => item.id === itemID
                 );
             if (targetItem) {
-                targetItem.isSelected = true;
+                targetItem.isSelected = false;
+            }
+        },
+        addCurrentItemFromPlayground(
+            state,
+            action: PayloadAction<{ itemID: number; playgroundID: number }>
+        ) {
+            const { itemID, playgroundID } = action.payload;
+            const targetItem = state.orderedData.find(
+                item => item.id === itemID
+            );
+            const playgroundItemSlot = // slot = item
+                state.currentBackgroundCollection.interactiveItems.find(
+                    item => item.id === itemID
+                );
+            if (targetItem && playgroundItemSlot) {
+                playgroundItemSlot.image = targetItem.image;
+                playgroundItemSlot.count = targetItem.count;
+                playgroundItemSlot.isSelected = true;
+                targetItem.isSelected = false;
             }
         }
     }
@@ -332,7 +349,8 @@ export const {
     saveGameSettingsData,
     setCurrentBackCollection,
     setOrderedData,
-    removeCurrentItemFromPlayground
+    removeCurrentItemFromPlayground,
+    addCurrentItemFromPlayground
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

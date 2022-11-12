@@ -49,27 +49,21 @@ const ImageWrapper = styled.div`
 // /. styled components
 
 interface propTypes {
-    id?: number;
+    id: number;
     count: number;
     image: string;
+    onDragStartHandler?: (arg1: any, arg2: number) => void;
 }
 
 // /. intefaces
 
 const InteractiveItemTemplate = (props: propTypes) => {
-    const { id, count, image } = props;
+    const { id, count, image, onDragStartHandler } = props;
 
     const [imageSrc, setImageSrc] = useState<string>(image);
     const [isImageErr, setImageErrStatus] = useState<boolean>(false);
 
     // /. hooks
-
-    const onDragStartHandler = (e: any): void => {
-        console.log('Drag has started!');
-        e.dataTransfer.setData('itemID', id);
-    };
-
-    // /. functions
 
     useEffect(() => {
         setImageSrc(image);
@@ -81,7 +75,7 @@ const InteractiveItemTemplate = (props: propTypes) => {
         <ImageWrapper
             draggable
             data-count={count}
-            onDragStart={e => onDragStartHandler(e)}
+            onDragStart={e => onDragStartHandler && onDragStartHandler(e, id)}
         >
             <Image
                 src={imageSrc}

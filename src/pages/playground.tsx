@@ -2,7 +2,9 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-import { useAppSelector } from '../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+
+import { addCurrentItemFromPlayground } from '../../store/mainSlice';
 
 import { Iinteractive } from '../types/backgroundCollectionTypes';
 
@@ -34,6 +36,8 @@ const InteractiveItemsList = styled.ul`
 const InteractiveItemTemplateWrapper = styled.li`
     display: flex;
     justify-content: center;
+    border: 1px dashed red;
+    height: 100%;
 
     &:hover {
         cursor: pointer;
@@ -42,7 +46,7 @@ const InteractiveItemTemplateWrapper = styled.li`
     &:nth-of-type(1),
     &:last-of-type {
         align-self: center;
-        margin-top: 5rem;
+        // margin-top: 5rem;
     }
 
     &:nth-of-type(3n) {
@@ -57,7 +61,34 @@ const PlaygroundPage = () => {
         state => state.mainSlice
     );
 
+    const dispatch = useAppDispatch();
+
     // /. hooks
+
+    const onDragStartHandler = (e: any, id: number): void => {
+        console.log('Drag has started!');
+        e.dataTransfer.setData('itemID', id);
+    };
+
+    const onDragOverHandler = (e: any): void => {
+        e.preventDefault();
+        console.log('draggin over in PLAYGROUND!');
+    };
+
+    const onDropHandler = (e: any, id: number): void => {
+        e.preventDefault();
+        console.log('dropped in PLAYGROUND!');
+        //
+        const targetItemID = +e.dataTransfer.getData('itemID');
+        dispatch(
+            addCurrentItemFromPlayground({
+                playgroundID: id,
+                itemID: targetItemID
+            })
+        );
+    };
+
+    // /. functions
 
     return (
         <Section>
@@ -68,9 +99,14 @@ const PlaygroundPage = () => {
                             return (
                                 <InteractiveItemTemplateWrapper
                                     key={template.id}
+                                    onDragOver={e => onDragOverHandler(e)}
+                                    onDrop={e => onDropHandler(e, template.id)}
                                 >
-                                    {!template.isSelected && (
+                                    {template.isSelected && (
                                         <InteractiveItemTemplate
+                                            onDragStartHandler={
+                                                onDragStartHandler
+                                            }
                                             {...template}
                                         />
                                     )}
@@ -82,7 +118,7 @@ const PlaygroundPage = () => {
 
                 <Prompt role={gameSettings.mode} />
 
-                <Bar />
+                <Bar onDragStartHandler={onDragStartHandler} />
             </Wrapper>
         </Section>
     );
