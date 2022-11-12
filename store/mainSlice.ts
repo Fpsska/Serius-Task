@@ -321,7 +321,7 @@ const mainSlice = createSlice({
                 targetItem.isSelected = false;
             }
         },
-        addCurrentItemFromPlayground(
+        addCurrentItemToPlayground(
             state,
             action: PayloadAction<{ itemID: number; playgroundID: number }>
         ) {
@@ -333,7 +333,7 @@ const mainSlice = createSlice({
                 state.currentBackgroundCollection.interactiveItems.find(
                     item => item.id === itemID
                 );
-            if (targetItem && playgroundItemSlot) {
+            if (targetItem && playgroundItemSlot && targetItem.image) {
                 playgroundItemSlot.image = targetItem.image;
                 playgroundItemSlot.count = targetItem.count;
                 playgroundItemSlot.isSelected = true;
@@ -350,7 +350,7 @@ export const {
     setCurrentBackCollection,
     setOrderedData,
     removeCurrentItemFromPlayground,
-    addCurrentItemFromPlayground
+    addCurrentItemToPlayground
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

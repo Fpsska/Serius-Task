@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
-import { addCurrentItemFromPlayground } from '../../store/mainSlice';
+import { addCurrentItemToPlayground } from '../../store/mainSlice';
 
 import { Iinteractive } from '../types/backgroundCollectionTypes';
 
@@ -81,11 +81,13 @@ const PlaygroundPage = () => {
         //
         const targetItemID = +e.dataTransfer.getData('itemID');
         dispatch(
-            addCurrentItemFromPlayground({
+            addCurrentItemToPlayground({
                 playgroundID: id,
                 itemID: targetItemID
             })
         );
+
+        // console.log(e.target.childElementCount);
     };
 
     // /. functions
