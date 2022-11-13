@@ -265,6 +265,7 @@ const mainSlice = createSlice({
             action: PayloadAction<{ id: number }>
         ) {
             const { id } = action.payload;
+            //
             state.quantityItemData.map(item =>
                 item.id === id
                     ? (item.isSelected = true)
@@ -276,6 +277,7 @@ const mainSlice = createSlice({
             action: PayloadAction<{ id: number }>
         ) {
             const { id } = action.payload;
+            //
             state.valueItemData.map(item =>
                 item.id === id
                     ? (item.isSelected = true)
@@ -289,12 +291,11 @@ const mainSlice = createSlice({
             state.currentBackgroundCollection = action.payload;
         },
         setOrderedData(
-            // include logic of removeCurrentItemFromPlayground AC
             state,
             action: PayloadAction<{ itemID: number; barID: number }>
         ) {
             const { itemID, barID } = action.payload;
-
+            //
             const targetItem =
                 state.currentBackgroundCollection.interactiveItems.find(
                     item => item.id === itemID
@@ -303,22 +304,11 @@ const mainSlice = createSlice({
                 item => item.id === barID
             );
             if (targetItem && barItemSlot) {
+                //// logic of set new items for ordered[]
                 barItemSlot.image = targetItem.image;
                 barItemSlot.count = targetItem.count;
-                barItemSlot.isSelected = true;
-            }
-        },
-        removeCurrentItemFromPlayground(
-            state,
-            action: PayloadAction<{ itemID: number }>
-        ) {
-            const { itemID } = action.payload;
-            const targetItem =
-                state.currentBackgroundCollection.interactiveItems.find(
-                    item => item.id === itemID
-                );
-            if (targetItem) {
-                targetItem.isSelected = false;
+                barItemSlot.isSelected = true; // show bar item
+                targetItem.isSelected = false; // hide playground item
             }
         },
         addCurrentItemToPlayground(
@@ -326,6 +316,7 @@ const mainSlice = createSlice({
             action: PayloadAction<{ itemID: number; playgroundID: number }>
         ) {
             const { itemID, playgroundID } = action.payload;
+            //
             const targetItem = state.orderedData.find(
                 item => item.id === itemID
             );
@@ -333,11 +324,11 @@ const mainSlice = createSlice({
                 state.currentBackgroundCollection.interactiveItems.find(
                     item => item.id === itemID
                 );
-            if (targetItem && playgroundItemSlot && targetItem.image) {
+            if (targetItem && playgroundItemSlot && targetItem.isSelected) {
                 playgroundItemSlot.image = targetItem.image;
                 playgroundItemSlot.count = targetItem.count;
-                playgroundItemSlot.isSelected = true;
-                targetItem.isSelected = false;
+                playgroundItemSlot.isSelected = true; // show playground item
+                targetItem.isSelected = false; // hide bar item
             }
         }
     }
@@ -349,7 +340,6 @@ export const {
     saveGameSettingsData,
     setCurrentBackCollection,
     setOrderedData,
-    removeCurrentItemFromPlayground,
     addCurrentItemToPlayground
 } = mainSlice.actions;
 

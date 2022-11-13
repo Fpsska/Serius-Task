@@ -4,10 +4,7 @@ import styled from '@emotion/styled';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
-import {
-    setOrderedData,
-    removeCurrentItemFromPlayground
-} from '../../store/mainSlice';
+import { setOrderedData } from '../../store/mainSlice';
 
 import { Iordered } from '../types/backgroundCollectionTypes';
 
@@ -67,7 +64,7 @@ const BarListTemplate = styled.li<BarListTemplateProps>`
 // /. styled components
 
 type BarListTemplateProps = {
-    isSelected?: boolean;
+    isSelected: boolean;
 };
 
 // /. types
@@ -103,11 +100,10 @@ const Bar = (props: propTypes) => {
 
     const onDropHandler = (e: any, id: number): void => {
         e.preventDefault();
-        console.log('You have dropped! ');
+        console.log('You have dropped!');
         //
         const targetItemID = +e.dataTransfer.getData('itemID');
-        dispatch(setOrderedData({ barID: id, itemID: targetItemID }));
-        dispatch(removeCurrentItemFromPlayground({ itemID: targetItemID }));
+        dispatch(setOrderedData({ itemID: targetItemID, barID: id }));
         //
         e.target.style.boxShadow = 'none';
     };
@@ -137,8 +133,8 @@ const Bar = (props: propTypes) => {
                             isSelected={template.isSelected}
                             key={template.id}
                             onDragOver={e => onDragOverHandler(e)}
-                            onDrop={e => onDropHandler(e, template.id)}
                             onDragLeave={e => onDragLeaveHandler(e)}
+                            onDrop={e => onDropHandler(e, template.id)}
                         >
                             {template.isSelected && (
                                 <InteractiveItemTemplate

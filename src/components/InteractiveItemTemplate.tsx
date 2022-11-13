@@ -10,7 +10,12 @@ const ImageWrapper = styled.div`
     position: relative;
     height: min-content;
     flex-shrink: 0;
-    transform: translate(0, 0);
+    transform: translate(0, 0) scale(1);
+    transition: all 0.25s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
 
     &::before {
         content: attr(data-count);

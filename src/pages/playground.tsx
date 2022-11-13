@@ -43,14 +43,18 @@ const InteractiveItemTemplateWrapper = styled.li`
         cursor: pointer;
     }
 
-    &:nth-of-type(1),
-    &:last-of-type {
-        align-self: center;
-        // margin-top: 5rem;
+    :nth-of-type(1),
+    :last-child {
+        div {
+            align-self: center;
+            margin-top: 5rem;
+        }
     }
 
-    &:nth-of-type(3n) {
-        align-self: end;
+    :nth-of-type(3n) {
+        div {
+            margin: auto 0 0 0;
+        }
     }
 `;
 
@@ -66,7 +70,7 @@ const PlaygroundPage = () => {
     // /. hooks
 
     const onDragStartHandler = (e: any, id: number): void => {
-        console.log('Drag has started!');
+        // console.log('Drag has started!');
         e.dataTransfer.setData('itemID', id);
     };
 
@@ -86,8 +90,6 @@ const PlaygroundPage = () => {
                 itemID: targetItemID
             })
         );
-
-        // console.log(e.target.childElementCount);
     };
 
     // /. functions
