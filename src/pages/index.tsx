@@ -48,6 +48,10 @@ const ButtonPlay = styled.button`
     background-color: var(--green-color);
     color: var(--white-color);
     padding: 12px 74px;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        color: var(--dark-color);
+    }
     &:disabled {
         opacity: 0.5;
     }
@@ -78,8 +82,22 @@ const FieldsetGrowed = styled(Fieldset)`
 `;
 
 const List = styled.ul`
+    position: relative;
     display: flex;
     justify-content: space-evenly;
+    width: min-content;
+    border-radius: 10px;
+    margin: 0 auto;
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 1px;
+        left: 0;
+        background-color: var(--yellow-color);
+        width: 100%;
+        height: 16px;
+        border-radius: 10px;
+    }
 `;
 
 const ListTemplate = styled.li`
@@ -87,7 +105,7 @@ const ListTemplate = styled.li`
     flex-direction: column;
     align-items: center;
     :not(:last-child) {
-        margin-right: 10px;
+        margin-right: 68px;
     }
 `;
 
@@ -105,18 +123,55 @@ const Label = styled.label`
     font-weight: 700;
     font-size: 18px;
     transition: all 0.3s ease-in-out;
-    cursor: pointer;
     order: -1;
-    &:hover {
-        cursor: pointer;
-    }
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const InputCount = styled.input`
     margin: 0;
-    &:hover ~ label {
-        color: var(--yellow-color);
+    position: absolute;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    clip: rect(0 0 0 0);
+    &:hover + span {
+        background-color: var(--blue-color);
+        opacity: 0.5;
     }
+    &:hover&:checked + span {
+        opacity: 1;
+    }
+    &:hover&:disabled + span {
+        cursor: default;
+    }
+    &:hover&:disabled&:checked + span {
+        cursor: not-allowed;
+    }
+    &:disabled + span {
+        background-color: transparent;
+        cursor: default;
+    }
+    &:disabled&:checked + span {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    &:checked + span {
+        background-color: var(--blue-color);
+    }
+`;
+
+const FakeInput = styled.span`
+    display: block;
+    background-color: transparent;
+    width: 18px;
+    height: 18px;
+    border-radius: 100%;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+    z-index: 1;
 `;
 
 // /. styled components
@@ -191,21 +246,25 @@ const StartPage = () => {
                         <List>
                             {quantityItemData.map((input: IquantityItem) => (
                                 <ListTemplate key={input.id}>
-                                    <InputCount
-                                        key={input.id}
-                                        id={`${input.name}-${input.id}`}
-                                        type="radio"
-                                        name={input.name}
-                                        value={input.value}
-                                        checked={input.isSelected}
-                                        onChange={e =>
-                                            onInputQuantityChange(e, input.id)
-                                        }
-                                    />
                                     <Label
                                         htmlFor={`${input.name}-${input.id}`}
                                     >
                                         {input.value}
+                                        <InputCount
+                                            key={input.id}
+                                            id={`${input.name}-${input.id}`}
+                                            type="radio"
+                                            name={input.name}
+                                            value={input.value}
+                                            checked={input.isSelected}
+                                            onChange={e =>
+                                                onInputQuantityChange(
+                                                    e,
+                                                    input.id
+                                                )
+                                            }
+                                        />
+                                        <FakeInput />
                                     </Label>
                                 </ListTemplate>
                             ))}
@@ -216,21 +275,25 @@ const StartPage = () => {
                         <List>
                             {valueItemData.map((input: IvalueItem) => (
                                 <ListTemplate key={input.id}>
-                                    <InputCount
-                                        key={input.id}
-                                        id={`${input.name}-${input.id}`}
-                                        type="radio"
-                                        name={input.name}
-                                        value={input.value}
-                                        checked={input.isSelected}
-                                        onChange={e =>
-                                            onInputTotalValueChange(e, input.id)
-                                        }
-                                    />
                                     <Label
                                         htmlFor={`${input.name}-${input.id}`}
                                     >
                                         {input.value}
+                                        <InputCount
+                                            key={input.id}
+                                            id={`${input.name}-${input.id}`}
+                                            type="radio"
+                                            name={input.name}
+                                            value={input.value}
+                                            checked={input.isSelected}
+                                            onChange={e =>
+                                                onInputTotalValueChange(
+                                                    e,
+                                                    input.id
+                                                )
+                                            }
+                                        />
+                                        <FakeInput />
                                     </Label>
                                 </ListTemplate>
                             ))}

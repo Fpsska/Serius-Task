@@ -13,11 +13,12 @@ const StyledMode = styled.div`
 `;
 
 const ModeButton = styled.input`
-    // position: absolute;
-    // overflow: hidden;
-    // height: 1px;
-    // width: 1px;
-    // clip: rect(0 0 0 0);
+    position: absolute;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    clip: rect(0 0 0 0);
+    transition: all 0.3s ease-in-out;
     &:disabled {
         opacity: 0.5;
     }
@@ -31,11 +32,13 @@ const ModeButtonLabel = styled.label<ButtonModeProps>`
     font-weight: 700;
     font-size: 22px;
     opacity: ${props => (props.isSelected ? 1 : 0.5)};
+    transition: all 0.3s ease-in-out;
     :not(:last-child) {
         margin-right: 36px;
     }
     &:hover {
         cursor: pointer;
+        opacity: ${props => !props.isSelected && 0.8};
     }
 `;
 
