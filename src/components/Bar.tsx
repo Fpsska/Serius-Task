@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
-import { setOrderedData } from '../../store/mainSlice';
+import { addCurrentItemToOrderedData } from '../../store/mainSlice';
 
 import { Iordered } from '../types/backgroundCollectionTypes';
 
@@ -103,7 +103,9 @@ const Bar = (props: propTypes) => {
         console.log('You have dropped!');
         //
         const targetItemID = +e.dataTransfer.getData('itemID');
-        dispatch(setOrderedData({ itemID: targetItemID, barID: id }));
+        dispatch(
+            addCurrentItemToOrderedData({ itemID: targetItemID, barID: id })
+        );
         //
         e.target.style.boxShadow = 'none';
     };

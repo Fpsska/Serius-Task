@@ -290,7 +290,7 @@ const mainSlice = createSlice({
         setCurrentBackCollection(state, action: PayloadAction<Ibackground>) {
             state.currentBackgroundCollection = action.payload;
         },
-        setOrderedData(
+        addCurrentItemToOrderedData(
             state,
             action: PayloadAction<{ itemID: number; barID: number }>
         ) {
@@ -304,31 +304,34 @@ const mainSlice = createSlice({
                 item => item.id === barID
             );
             if (targetItem && barItemSlot) {
-                //// logic of set new items for ordered[]
-                barItemSlot.image = targetItem.image;
-                barItemSlot.count = targetItem.count;
-                barItemSlot.isSelected = true; // show bar item
-                targetItem.isSelected = false; // hide playground item
+                if (targetItem.isSelected && !barItemSlot.isSelected) {
+                    barItemSlot.image = targetItem.image;
+                    barItemSlot.count = targetItem.count;
+                    barItemSlot.isSelected = true; // show bar item
+                    targetItem.isSelected = false; // hide playground item
+                }
             }
         },
         addCurrentItemToPlayground(
             state,
-            action: PayloadAction<{ itemID: number; playgroundID: number }>
+            action: PayloadAction<{ playgroundID: number; itemID: number }>
         ) {
-            const { itemID, playgroundID } = action.payload;
+            const { playgroundID, itemID } = action.payload;
             //
+            const playgroundItemSlot =
+                state.currentBackgroundCollection.interactiveItems.find(
+                    item => item.id === playgroundID
+                );
             const targetItem = state.orderedData.find(
                 item => item.id === itemID
             );
-            const playgroundItemSlot = // slot = item
-                state.currentBackgroundCollection.interactiveItems.find(
-                    item => item.id === itemID
-                );
-            if (targetItem && playgroundItemSlot && targetItem.isSelected) {
-                playgroundItemSlot.image = targetItem.image;
-                playgroundItemSlot.count = targetItem.count;
-                playgroundItemSlot.isSelected = true; // show playground item
-                targetItem.isSelected = false; // hide bar item
+            if (playgroundItemSlot && targetItem) {
+                if (!playgroundItemSlot.isSelected && targetItem.isSelected) {
+                    playgroundItemSlot.image = targetItem.image;
+                    playgroundItemSlot.count = targetItem.count;
+                    playgroundItemSlot.isSelected = true; // show playground item
+                    targetItem.isSelected = false; // hide bar item
+                }
             }
         }
     }
@@ -339,7 +342,7 @@ export const {
     switchValueItemSelectedStatus,
     saveGameSettingsData,
     setCurrentBackCollection,
-    setOrderedData,
+    addCurrentItemToOrderedData,
     addCurrentItemToPlayground
 } = mainSlice.actions;
 
