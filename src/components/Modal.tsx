@@ -1,6 +1,16 @@
 import React from 'react';
 
+import { useRouter } from 'next/router';
+
 import styled from '@emotion/styled';
+
+import { useAppDispatch } from '../../store/hooks';
+
+import {
+    switchModalVisibleStatus,
+    saveGameSettingsData,
+    resetOrderedData
+} from '../../store/mainSlice';
 
 // /. imports
 
@@ -52,7 +62,7 @@ const Wrapper = styled.div`
 `;
 
 const Star = styled.span`
-    background-image: url(/images/star-icon.svg);
+    background-image: url(/svg/star-icon.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -110,16 +120,31 @@ const Button = styled.button`
     font-size: 26px;
     font-weight: 600;
     padding: 5px 30px;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        color: var(--violet-color);
+    }
 `;
 
 // /. styled components
 
-interface propTypes {
-    setModalVisibleStatus: (arg: boolean) => void;
-}
+const Modal = () => {
+    const dispatch = useAppDispatch();
+    const router = useRouter();
 
-const Modal: React.FC<propTypes> = props => {
-    const { setModalVisibleStatus } = props;
+    // /. hooks
+
+    const onButtonRestartClick = () => {
+        dispatch(switchModalVisibleStatus(false));
+        dispatch(
+            saveGameSettingsData({ quantity: '', totalValue: '', mode: '' })
+        );
+        dispatch(resetOrderedData());
+        //
+        router.push('/');
+    };
+
+    // /. functions
 
     return (
         <StyledModal>
@@ -130,9 +155,7 @@ const Modal: React.FC<propTypes> = props => {
                 <StarSmall />
                 <Title>Победа!</Title>
                 <Caption>Молодец! Ты успешно справился с заданием!</Caption>
-                <Button onClick={() => setModalVisibleStatus(false)}>
-                    Заново
-                </Button>
+                <Button onClick={onButtonRestartClick}>Заново</Button>
             </Wrapper>
         </StyledModal>
     );

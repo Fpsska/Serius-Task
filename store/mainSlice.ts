@@ -19,6 +19,7 @@ interface mainSliceTypes {
     backgroundsCollection: Ibackground[];
     currentBackgroundCollection: Ibackground;
     orderedData: Iordered[];
+    isModalVisible: boolean;
 }
 
 // /. interfaces
@@ -251,7 +252,8 @@ const initialState: mainSliceTypes = {
         { id: 4, image: '', count: 0, isSelected: false },
         { id: 5, image: '', count: 0, isSelected: false }
     ],
-    gameSettings: { quantity: '', totalValue: '', mode: '' }
+    gameSettings: { quantity: '', totalValue: '', mode: '' },
+    isModalVisible: false
 };
 
 // /. initialState
@@ -333,6 +335,16 @@ const mainSlice = createSlice({
                     targetItem.isSelected = false; // hide bar item
                 }
             }
+        },
+        switchModalVisibleStatus(state, action: PayloadAction<boolean>) {
+            state.isModalVisible = action.payload;
+        },
+        resetOrderedData(state) {
+            state.orderedData.map(item => {
+                item.image = '';
+                item.count = 0;
+                item.isSelected = false;
+            });
         }
     }
 });
@@ -343,7 +355,9 @@ export const {
     saveGameSettingsData,
     setCurrentBackCollection,
     addCurrentItemToOrderedData,
-    addCurrentItemToPlayground
+    addCurrentItemToPlayground,
+    switchModalVisibleStatus,
+    resetOrderedData
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

@@ -48,12 +48,11 @@ const Container = styled.div`
 // /. styled components
 
 const Layout = ({ children }: any) => {
-    const [isModalVisible, setModalVisibleStatus] = useState<boolean>(false);
     const [backgroundIMG, setBackgroundIMG] = useState<string>('');
 
     const { pathname } = useLocationData();
 
-    const { currentBackgroundCollection } = useAppSelector(
+    const { currentBackgroundCollection, isModalVisible } = useAppSelector(
         state => state.mainSlice
     );
 
@@ -79,9 +78,7 @@ const Layout = ({ children }: any) => {
                 <Container>
                     {isModalVisible && (
                         <Overlay>
-                            <Modal
-                                setModalVisibleStatus={setModalVisibleStatus}
-                            />
+                            <Modal />
                         </Overlay>
                     )}
                     {children}

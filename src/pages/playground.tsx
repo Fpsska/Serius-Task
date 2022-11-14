@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
-import { addCurrentItemToPlayground } from '../../store/mainSlice';
+import {
+    addCurrentItemToPlayground,
+    switchModalVisibleStatus
+} from '../../store/mainSlice';
 
 import { Iinteractive } from '../types/backgroundCollectionTypes';
 
@@ -61,9 +64,8 @@ const InteractiveItemTemplateWrapper = styled.li`
 // /. styled components
 
 const PlaygroundPage = () => {
-    const { gameSettings, currentBackgroundCollection } = useAppSelector(
-        state => state.mainSlice
-    );
+    const { gameSettings, currentBackgroundCollection, orderedData } =
+        useAppSelector(state => state.mainSlice);
 
     const dispatch = useAppDispatch();
 
@@ -93,6 +95,14 @@ const PlaygroundPage = () => {
     };
 
     // /. functions
+
+    useEffect(() => {
+        if (orderedData.every(item => item.isSelected)) {
+            dispatch(switchModalVisibleStatus(true));
+        }
+    }, [orderedData]);
+
+    // /. effects
 
     return (
         <Section>
