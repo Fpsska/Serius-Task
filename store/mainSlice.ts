@@ -364,10 +364,10 @@ const mainSlice = createSlice({
                     // console.log('refOrderedData:', state.refOrderedData);
                     break;
                 case 'descending':
-                    state.refOrderedData = refArr.interactiveItems.sort(
-                        (a: any, b: any) => (a.count < b.count ? 1 : -1)
-                    );
-                    // console.log('refOrderedData:', state.refOrderedData);
+                    state.refOrderedData = refArr.interactiveItems
+                        .sort((a: any, b: any) => (a.count < b.count ? 1 : -1))
+                        .reverse();
+                    console.log('refOrderedData:', state.refOrderedData);
                     break;
             }
         }
