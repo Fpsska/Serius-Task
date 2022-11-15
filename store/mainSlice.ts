@@ -19,6 +19,7 @@ interface mainSliceTypes {
     backgroundsCollection: Ibackground[];
     currentBackgroundCollection: Ibackground;
     orderedData: Iordered[];
+    refOrderedData: Iordered[];
     isModalVisible: boolean;
 }
 
@@ -252,6 +253,7 @@ const initialState: mainSliceTypes = {
         { id: 4, image: '', count: 0, isSelected: false },
         { id: 5, image: '', count: 0, isSelected: false }
     ],
+    refOrderedData: [],
     gameSettings: { quantity: '', totalValue: '', mode: '' },
     isModalVisible: false
 };
@@ -345,6 +347,29 @@ const mainSlice = createSlice({
                 item.count = 0;
                 item.isSelected = false;
             });
+        },
+        setReferenceOrderedData(
+            state,
+            action: PayloadAction<{ mode: string }>
+        ) {
+            const { mode } = action.payload;
+            const refArr = JSON.parse(
+                JSON.stringify(state.currentBackgroundCollection)
+            );
+            switch (mode) {
+                case 'ascending':
+                    state.refOrderedData = refArr.interactiveItems.sort(
+                        (a: any, b: any) => (a.count > b.count ? 1 : -1)
+                    );
+                    // console.log('refOrderedData:', state.refOrderedData);
+                    break;
+                case 'descending':
+                    state.refOrderedData = refArr.interactiveItems.sort(
+                        (a: any, b: any) => (a.count < b.count ? 1 : -1)
+                    );
+                    // console.log('refOrderedData:', state.refOrderedData);
+                    break;
+            }
         }
     }
 });
@@ -357,7 +382,8 @@ export const {
     addCurrentItemToOrderedData,
     addCurrentItemToPlayground,
     switchModalVisibleStatus,
-    resetOrderedData
+    resetOrderedData,
+    setReferenceOrderedData
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

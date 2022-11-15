@@ -80,6 +80,8 @@ const Mode = (props: propTypes) => {
         }
     ]);
 
+    // /. hooks
+
     const onButtonChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         id: number
@@ -94,6 +96,8 @@ const Mode = (props: propTypes) => {
         );
         setButtonModeTemplates(newArr);
     };
+
+    // /. functions
 
     return (
         <StyledMode>

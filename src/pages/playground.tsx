@@ -6,8 +6,11 @@ import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
 import {
     addCurrentItemToPlayground,
-    switchModalVisibleStatus
+    switchModalVisibleStatus,
+    setReferenceOrderedData
 } from '../../store/mainSlice';
+
+import { compareObjByKey } from '../helpers/compareObjByKey';
 
 import { Iinteractive } from '../types/backgroundCollectionTypes';
 
@@ -64,8 +67,12 @@ const InteractiveItemTemplateWrapper = styled.li`
 // /. styled components
 
 const PlaygroundPage = () => {
-    const { gameSettings, currentBackgroundCollection, orderedData } =
-        useAppSelector(state => state.mainSlice);
+    const {
+        gameSettings,
+        currentBackgroundCollection,
+        orderedData,
+        refOrderedData
+    } = useAppSelector(state => state.mainSlice);
 
     const dispatch = useAppDispatch();
 
@@ -78,12 +85,12 @@ const PlaygroundPage = () => {
 
     const onDragOverHandler = (e: any): void => {
         e.preventDefault();
-        console.log('draggin over in PLAYGROUND!');
+        // console.log('draggin over in PLAYGROUND!');
     };
 
     const onDropHandler = (e: any, id: number): void => {
         e.preventDefault();
-        console.log('dropped in PLAYGROUND!');
+        // console.log('dropped in PLAYGROUND!');
         //
         const targetItemID = +e.dataTransfer.getData('itemID');
         dispatch(
@@ -97,10 +104,21 @@ const PlaygroundPage = () => {
     // /. functions
 
     useEffect(() => {
-        if (orderedData.every(item => item.isSelected)) {
+        dispatch(setReferenceOrderedData({ mode: gameSettings.mode }));
+    }, [gameSettings.mode]); // or gameSettings
+
+    useEffect(() => {
+        const isItemsSelected = orderedData.every(item => item.isSelected);
+        const isArraysEqual = compareObjByKey(
+            refOrderedData,
+            orderedData,
+            'count'
+        );
+        // console.log(orderedData);
+        if (isItemsSelected && isArraysEqual) {
             dispatch(switchModalVisibleStatus(true));
         }
-    }, [orderedData]);
+    }, [orderedData, refOrderedData]);
 
     // /. effects
 

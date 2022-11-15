@@ -90,7 +90,7 @@ const Bar = (props: propTypes) => {
 
     const onDragOverHandler = (e: any): void => {
         e.preventDefault();
-        console.log('Draggin over now!');
+        // console.log('Draggin over now!');
         //
         if (!e.target.childElementCount) {
             // forbid to add styles when item is already selected
@@ -100,7 +100,7 @@ const Bar = (props: propTypes) => {
 
     const onDropHandler = (e: any, id: number): void => {
         e.preventDefault();
-        console.log('You have dropped!');
+        // console.log('You have dropped!');
         //
         const targetItemID = +e.dataTransfer.getData('itemID');
         dispatch(
@@ -111,7 +111,7 @@ const Bar = (props: propTypes) => {
     };
 
     const onDragLeaveHandler = (e: any): void => {
-        console.log('You leave out of area');
+        // console.log('You leave out of area');
         if (!e.target.childElementCount) {
             // forbid to add styles when item is already selected
             e.target.style.boxShadow = 'inset 0px 4px 25px rgba(0, 0, 0, 0.25)';
