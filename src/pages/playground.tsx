@@ -105,16 +105,18 @@ const PlaygroundPage = () => {
 
     useEffect(() => {
         dispatch(setReferenceOrderedData({ mode: gameSettings.mode }));
-    }, [gameSettings.mode]); // or gameSettings
+    }, [gameSettings]); // or gameSettings.mode
 
     useEffect(() => {
+        const outPutOrderedData = orderedData.filter(
+            item => !item.isInitialValue
+        );
         const isItemsSelected = orderedData.every(item => item.isSelected);
         const isArraysEqual = compareObjByKey(
             refOrderedData,
-            orderedData,
+            outPutOrderedData,
             'count'
         );
-        // console.log(orderedData);
         if (isItemsSelected && isArraysEqual) {
             dispatch(switchModalVisibleStatus(true));
         }

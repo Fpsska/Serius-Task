@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../store/hooks';
 
 import {
     switchModalVisibleStatus,
+    switchGameStartedStatus,
     saveGameSettingsData,
     resetOrderedData
 } from '../../store/mainSlice';
@@ -140,6 +141,7 @@ const Modal = () => {
             saveGameSettingsData({ quantity: '', totalValue: '', mode: '' })
         );
         dispatch(resetOrderedData());
+        dispatch(switchGameStartedStatus(false));
         //
         router.push('/');
     };

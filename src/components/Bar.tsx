@@ -25,7 +25,7 @@ const StyledBar = styled.div`
 const BarList = styled.ul`
     display: grid;
     grid-gap: 5px;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
 `;
 
 const BarListTemplate = styled.li<BarListTemplateProps>`

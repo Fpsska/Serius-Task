@@ -7,6 +7,7 @@ export interface Iinteractive {
 
 export interface Ibackground {
     id: number;
+    name: string;
     playgroundImage: string;
     barImage: string;
     interactiveItems: Iinteractive[];
@@ -14,4 +15,5 @@ export interface Ibackground {
 
 export interface Iordered extends Iinteractive {
     isSelected: boolean;
+    isInitialValue?: boolean;
 }

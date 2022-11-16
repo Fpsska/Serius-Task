@@ -9,8 +9,10 @@ import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import {
     switchQuantityItemSelectedStatus,
     switchValueItemSelectedStatus,
+    switchGameStartedStatus,
     saveGameSettingsData,
-    setCurrentBackCollection
+    setCurrentBackCollection,
+    setInitialItemOfOrderedData
 } from '../../store/mainSlice';
 
 import { getRandomArrElement } from '../helpers/getRandomArrElement';
@@ -188,7 +190,9 @@ const StartPage = () => {
         quantityItemData,
         valueItemData,
         gameSettings,
-        backgroundsCollection
+        backgroundsCollection,
+        orderedData,
+        isGameStarted
     } = useAppSelector(state => state.mainSlice);
 
     // /. hooks
@@ -219,6 +223,7 @@ const StartPage = () => {
                 mode: modeValue || 'ascending'
             })
         );
+        dispatch(switchGameStartedStatus(true));
         //
         router.push('/playground');
     };
@@ -231,9 +236,11 @@ const StartPage = () => {
         );
     }, [backgroundsCollection]);
 
-    // useEffect(() => {
-    //     console.log('gameSettings', gameSettings);
-    // }, [gameSettings]);
+    useEffect(() => {
+        if (isGameStarted) {
+            dispatch(setInitialItemOfOrderedData({ mode: gameSettings.mode }));
+        }
+    }, [gameSettings, isGameStarted]); // gameSettings.mode
 
     // /. effects
 

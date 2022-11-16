@@ -21,9 +21,10 @@ interface mainSliceTypes {
     orderedData: Iordered[];
     refOrderedData: Iordered[];
     isModalVisible: boolean;
+    isGameStarted: boolean;
 }
 
-// /. interfaces
+// /. interfaces  candy
 
 const initialState: mainSliceTypes = {
     quantityItemData: [
@@ -93,6 +94,7 @@ const initialState: mainSliceTypes = {
     backgroundsCollection: [
         {
             id: 1,
+            name: 'candy',
             playgroundImage: '/images/background-template_1.png',
             barImage: '/images/bar-template_1.png',
             interactiveItems: [
@@ -130,6 +132,7 @@ const initialState: mainSliceTypes = {
         },
         {
             id: 2,
+            name: 'coin',
             playgroundImage: '/images/background-template_2.png',
             barImage: '/images/bar-template_2.png',
             interactiveItems: [
@@ -167,6 +170,7 @@ const initialState: mainSliceTypes = {
         },
         {
             id: 3,
+            name: 'toy',
             playgroundImage: '/images/background-template_3.png',
             barImage: '/images/bar-template_3.png',
             interactiveItems: [
@@ -204,6 +208,7 @@ const initialState: mainSliceTypes = {
         },
         {
             id: 4,
+            name: 'flower',
             playgroundImage: '/images/background-template_4.png',
             barImage: '/images/bar-template_4.png',
             interactiveItems: [
@@ -242,6 +247,7 @@ const initialState: mainSliceTypes = {
     ],
     currentBackgroundCollection: {
         id: 0,
+        name: '',
         playgroundImage: '',
         barImage: '',
         interactiveItems: []
@@ -251,11 +257,13 @@ const initialState: mainSliceTypes = {
         { id: 2, image: '', count: 0, isSelected: false },
         { id: 3, image: '', count: 0, isSelected: false },
         { id: 4, image: '', count: 0, isSelected: false },
-        { id: 5, image: '', count: 0, isSelected: false }
+        { id: 5, image: '', count: 0, isSelected: false },
+        { id: 6, image: '', count: 0, isSelected: false }
     ],
     refOrderedData: [],
     gameSettings: { quantity: '', totalValue: '', mode: '' },
-    isModalVisible: false
+    isModalVisible: false,
+    isGameStarted: false
 };
 
 // /. initialState
@@ -294,6 +302,39 @@ const mainSlice = createSlice({
         setCurrentBackCollection(state, action: PayloadAction<Ibackground>) {
             state.currentBackgroundCollection = action.payload;
         },
+        setInitialItemOfOrderedData(
+            state,
+            action: PayloadAction<{ mode: string }>
+        ) {
+            const { mode } = action.payload;
+            //
+            const isAscendingMode = mode === 'ascending';
+            const initialEl = isAscendingMode
+                ? state.orderedData[0]
+                : state.orderedData[state.orderedData.length - 1];
+            //
+            initialEl.isSelected = true;
+            initialEl.isInitialValue = true;
+            //
+            switch (state.currentBackgroundCollection.name) {
+                case 'candy':
+                    initialEl.image = '/svg/candy-item_2.svg';
+                    initialEl.count = isAscendingMode ? 36 : 118;
+                    break;
+                case 'coin':
+                    initialEl.image = '/svg/coin-item_1.svg';
+                    initialEl.count = isAscendingMode ? 19 : 118;
+                    break;
+                case 'flower':
+                    initialEl.image = '/svg/flower-item_1.svg';
+                    initialEl.count = isAscendingMode ? 22 : 118;
+                    break;
+                case 'toy':
+                    initialEl.image = '/svg/toy-item_5.svg';
+                    initialEl.count = isAscendingMode ? 36 : 118;
+                    break;
+            }
+        },
         addCurrentItemToOrderedData(
             state,
             action: PayloadAction<{ itemID: number; barID: number }>
@@ -308,7 +349,11 @@ const mainSlice = createSlice({
                 item => item.id === barID
             );
             if (targetItem && barItemSlot) {
-                if (targetItem.isSelected && !barItemSlot.isSelected) {
+                if (
+                    targetItem.isSelected &&
+                    !barItemSlot.isSelected &&
+                    !barItemSlot.isInitialValue
+                ) {
                     barItemSlot.image = targetItem.image;
                     barItemSlot.count = targetItem.count;
                     barItemSlot.isSelected = true; // show bar item
@@ -329,7 +374,11 @@ const mainSlice = createSlice({
             const targetItem = state.orderedData.find(
                 item => item.id === itemID
             );
-            if (playgroundItemSlot && targetItem) {
+            if (
+                playgroundItemSlot &&
+                targetItem &&
+                !targetItem.isInitialValue
+            ) {
                 if (!playgroundItemSlot.isSelected && targetItem.isSelected) {
                     playgroundItemSlot.image = targetItem.image;
                     playgroundItemSlot.count = targetItem.count;
@@ -340,6 +389,9 @@ const mainSlice = createSlice({
         },
         switchModalVisibleStatus(state, action: PayloadAction<boolean>) {
             state.isModalVisible = action.payload;
+        },
+        switchGameStartedStatus(state, action: PayloadAction<boolean>) {
+            state.isGameStarted = action.payload;
         },
         resetOrderedData(state) {
             state.orderedData.map(item => {
@@ -353,21 +405,23 @@ const mainSlice = createSlice({
             action: PayloadAction<{ mode: string }>
         ) {
             const { mode } = action.payload;
+            //
             const refArr = JSON.parse(
                 JSON.stringify(state.currentBackgroundCollection)
             );
+            // console.log('refArr:', refArr);
             switch (mode) {
                 case 'ascending':
                     state.refOrderedData = refArr.interactiveItems.sort(
                         (a: any, b: any) => (a.count > b.count ? 1 : -1)
                     );
-                    // console.log('refOrderedData:', state.refOrderedData);
+                    // console.log('refOrderedData ASC:', state.refOrderedData);
                     break;
                 case 'descending':
                     state.refOrderedData = refArr.interactiveItems
                         .sort((a: any, b: any) => (a.count < b.count ? 1 : -1))
                         .reverse();
-                    console.log('refOrderedData:', state.refOrderedData);
+                    // console.log('refOrderedData DESC:', state.refOrderedData);
                     break;
             }
         }
@@ -379,9 +433,11 @@ export const {
     switchValueItemSelectedStatus,
     saveGameSettingsData,
     setCurrentBackCollection,
+    setInitialItemOfOrderedData,
     addCurrentItemToOrderedData,
     addCurrentItemToPlayground,
     switchModalVisibleStatus,
+    switchGameStartedStatus,
     resetOrderedData,
     setReferenceOrderedData
 } = mainSlice.actions;
