@@ -12,7 +12,8 @@ import {
     switchGameStartedStatus,
     saveGameSettingsData,
     setCurrentBackCollection,
-    setInitialItemOfOrderedData
+    setInitialItemOfOrderedData,
+    setPlaygroundData
 } from '../../store/mainSlice';
 
 import { getRandomArrElement } from '../helpers/getRandomArrElement';
@@ -191,7 +192,6 @@ const StartPage = () => {
         valueItemData,
         gameSettings,
         backgroundsCollection,
-        orderedData,
         isGameStarted
     } = useAppSelector(state => state.mainSlice);
 
@@ -231,16 +231,25 @@ const StartPage = () => {
     // /. functions
 
     useEffect(() => {
-        dispatch(
-            setCurrentBackCollection(getRandomArrElement(backgroundsCollection))
-        );
-    }, [backgroundsCollection]);
+        if (isGameStarted) {
+            dispatch(
+                setCurrentBackCollection(
+                    getRandomArrElement(backgroundsCollection)
+                )
+            );
+        }
+    }, [backgroundsCollection, isGameStarted]);
 
     useEffect(() => {
         if (isGameStarted) {
             dispatch(setInitialItemOfOrderedData({ mode: gameSettings.mode }));
+            dispatch(
+                setPlaygroundData({
+                    quantityItemsLimit: +gameSettings.quantity
+                })
+            );
         }
-    }, [gameSettings, isGameStarted]); // gameSettings.mode
+    }, [gameSettings, isGameStarted]); // gameSettings
 
     // /. effects
 

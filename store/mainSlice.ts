@@ -22,6 +22,7 @@ interface mainSliceTypes {
     refOrderedData: Iordered[];
     isModalVisible: boolean;
     isGameStarted: boolean;
+    quantityItemsLimit: number;
 }
 
 // /. interfaces  candy
@@ -263,7 +264,8 @@ const initialState: mainSliceTypes = {
     refOrderedData: [],
     gameSettings: { quantity: '', totalValue: '', mode: '' },
     isModalVisible: false,
-    isGameStarted: false
+    isGameStarted: false,
+    quantityItemsLimit: 0
 };
 
 // /. initialState
@@ -301,6 +303,16 @@ const mainSlice = createSlice({
         },
         setCurrentBackCollection(state, action: PayloadAction<Ibackground>) {
             state.currentBackgroundCollection = action.payload;
+        },
+        setPlaygroundData(
+            state,
+            action: PayloadAction<{ quantityItemsLimit: number }>
+        ) {
+            const { quantityItemsLimit } = action.payload;
+            console.log(quantityItemsLimit);
+            state.currentBackgroundCollection.interactiveItems.splice(
+                quantityItemsLimit
+            );
         },
         setInitialItemOfOrderedData(
             state,
@@ -440,6 +452,7 @@ export const {
     switchQuantityItemSelectedStatus,
     switchValueItemSelectedStatus,
     saveGameSettingsData,
+    setPlaygroundData,
     setCurrentBackCollection,
     setInitialItemOfOrderedData,
     removeInitialStatusOfOrderedDataItem,

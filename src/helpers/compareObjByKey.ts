@@ -2,7 +2,7 @@ export function compareObjByKey(
     array1: any[],
     array2: any[],
     keyProp: string
-): any {
+): boolean {
     if (array1.length !== array2.length) {
         return false;
     }
