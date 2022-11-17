@@ -10,7 +10,8 @@ import {
     switchModalVisibleStatus,
     switchGameStartedStatus,
     saveGameSettingsData,
-    resetOrderedData
+    resetOrderedData,
+    removeInitialStatusOfOrderedDataItem
 } from '../../store/mainSlice';
 
 // /. imports
@@ -142,6 +143,7 @@ const Modal = () => {
         );
         dispatch(resetOrderedData());
         dispatch(switchGameStartedStatus(false));
+        dispatch(removeInitialStatusOfOrderedDataItem());
         //
         router.push('/');
     };

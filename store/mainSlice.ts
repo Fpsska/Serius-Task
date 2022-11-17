@@ -309,30 +309,38 @@ const mainSlice = createSlice({
             const { mode } = action.payload;
             //
             const isAscendingMode = mode === 'ascending';
-            const initialEl = isAscendingMode
+            const initialItem = isAscendingMode
                 ? state.orderedData[0]
                 : state.orderedData[state.orderedData.length - 1];
             //
-            initialEl.isSelected = true;
-            initialEl.isInitialValue = true;
+            initialItem.isSelected = true;
+            initialItem.isInitialValue = true;
             //
             switch (state.currentBackgroundCollection.name) {
                 case 'candy':
-                    initialEl.image = '/svg/candy-item_2.svg';
-                    initialEl.count = isAscendingMode ? 36 : 118;
+                    initialItem.image = '/svg/candy-item_2.svg';
+                    initialItem.count = isAscendingMode ? 36 : 118;
                     break;
                 case 'coin':
-                    initialEl.image = '/svg/coin-item_1.svg';
-                    initialEl.count = isAscendingMode ? 19 : 118;
+                    initialItem.image = '/svg/coin-item_1.svg';
+                    initialItem.count = isAscendingMode ? 19 : 118;
                     break;
                 case 'flower':
-                    initialEl.image = '/svg/flower-item_1.svg';
-                    initialEl.count = isAscendingMode ? 22 : 118;
+                    initialItem.image = '/svg/flower-item_1.svg';
+                    initialItem.count = isAscendingMode ? 22 : 118;
                     break;
                 case 'toy':
-                    initialEl.image = '/svg/toy-item_5.svg';
-                    initialEl.count = isAscendingMode ? 36 : 118;
+                    initialItem.image = '/svg/toy-item_5.svg';
+                    initialItem.count = isAscendingMode ? 36 : 118;
                     break;
+            }
+        },
+        removeInitialStatusOfOrderedDataItem(state) {
+            const initialItem = state.orderedData.find(
+                item => item.isInitialValue
+            );
+            if (initialItem) {
+                initialItem.isInitialValue = false;
             }
         },
         addCurrentItemToOrderedData(
@@ -434,6 +442,7 @@ export const {
     saveGameSettingsData,
     setCurrentBackCollection,
     setInitialItemOfOrderedData,
+    removeInitialStatusOfOrderedDataItem,
     addCurrentItemToOrderedData,
     addCurrentItemToPlayground,
     switchModalVisibleStatus,
