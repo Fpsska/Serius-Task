@@ -1,5 +1,5 @@
 export interface Isettings {
-    quantity: string;
-    totalValue: string | number;
+    quantity: number;
+    totalValue: number;
     mode: string;
 }

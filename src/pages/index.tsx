@@ -13,7 +13,8 @@ import {
     saveGameSettingsData,
     setCurrentBackCollection,
     setInitialItemOfOrderedData,
-    setPlaygroundData
+    setPlaygroundData,
+    setOrderedData
 } from '../../store/mainSlice';
 
 import { getRandomArrElement } from '../helpers/getRandomArrElement';
@@ -180,9 +181,9 @@ const FakeInput = styled.span`
 // /. styled components
 
 const StartPage = () => {
-    const [itemQuantityValue, setItemQuantityValue] = useState<string>('');
-    const [itemValue, setItemValue] = useState<string>('');
-    const [modeValue, setModeValue] = useState<string>('');
+    const [itemQuantityValue, setItemQuantityValue] = useState<number>(2);
+    const [itemValue, setItemValue] = useState<number>(9);
+    const [modeValue, setModeValue] = useState<string>('ascending');
 
     const router = useRouter();
     const dispatch = useAppDispatch();
@@ -201,7 +202,7 @@ const StartPage = () => {
         e: React.ChangeEvent<HTMLInputElement>,
         id: number
     ): void => {
-        setItemQuantityValue(e.target.value);
+        setItemQuantityValue(+e.target.value);
         dispatch(switchQuantityItemSelectedStatus({ id }));
     };
 
@@ -209,7 +210,7 @@ const StartPage = () => {
         e: React.ChangeEvent<HTMLInputElement>,
         id: number
     ): void => {
-        setItemValue(e.target.value);
+        setItemValue(+e.target.value);
         dispatch(switchValueItemSelectedStatus({ id }));
     };
 
@@ -218,9 +219,9 @@ const StartPage = () => {
         //
         dispatch(
             saveGameSettingsData({
-                quantity: itemQuantityValue || quantityItemData[0]?.value,
-                totalValue: itemValue || valueItemData[0]?.value,
-                mode: modeValue || 'ascending'
+                quantity: itemQuantityValue,
+                totalValue: itemValue,
+                mode: modeValue
             })
         );
         dispatch(switchGameStartedStatus(true));
@@ -248,8 +249,14 @@ const StartPage = () => {
                     quantityItemsLimit: +gameSettings.quantity
                 })
             );
+            dispatch(
+                setOrderedData({
+                    quantityItemsLimit: gameSettings.quantity,
+                    itemsValueLimit: gameSettings.totalValue
+                })
+            );
         }
-    }, [gameSettings, isGameStarted]); // gameSettings
+    }, [gameSettings, isGameStarted]);
 
     // /. effects
 

@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 
+import { getRandomNumOfRange } from '../src/helpers/getRandomNumOfRange';
+
 import { IquantityItem } from '../src/types/quantityItemTypes';
 import { IvalueItem } from '../src/types/valueItemTypes';
 
@@ -22,7 +24,6 @@ interface mainSliceTypes {
     refOrderedData: Iordered[];
     isModalVisible: boolean;
     isGameStarted: boolean;
-    quantityItemsLimit: number;
 }
 
 // /. interfaces  candy
@@ -262,10 +263,9 @@ const initialState: mainSliceTypes = {
         { id: 6, image: '', count: 0, isSelected: false }
     ],
     refOrderedData: [],
-    gameSettings: { quantity: '', totalValue: '', mode: '' },
+    gameSettings: { quantity: 0, totalValue: 0, mode: '' },
     isModalVisible: false,
-    isGameStarted: false,
-    quantityItemsLimit: 0
+    isGameStarted: false
 };
 
 // /. initialState
@@ -309,10 +309,39 @@ const mainSlice = createSlice({
             action: PayloadAction<{ quantityItemsLimit: number }>
         ) {
             const { quantityItemsLimit } = action.payload;
-            console.log(quantityItemsLimit);
+            //
             state.currentBackgroundCollection.interactiveItems.splice(
                 quantityItemsLimit
             );
+        },
+        setOrderedData(
+            state,
+            action: PayloadAction<{
+                quantityItemsLimit: number;
+                itemsValueLimit: number;
+            }>
+        ) {
+            const { quantityItemsLimit, itemsValueLimit } = action.payload;
+            //
+            const numbersArr = getRandomNumOfRange(
+                itemsValueLimit,
+                quantityItemsLimit
+            );
+
+            for (
+                let i = 0;
+                i < state.currentBackgroundCollection.interactiveItems.length;
+                i++
+            ) {
+                const number = numbersArr[i];
+                const playgroundItem =
+                    state.currentBackgroundCollection.interactiveItems[i];
+                playgroundItem.count = number;
+            }
+            // state.currentBackgroundCollection.interactiveItems.map(item => {
+            //     const randomNum = Math.floor(Math.random() * numbersArr.length);
+            //     item.count = randomNum;
+            // });
         },
         setInitialItemOfOrderedData(
             state,
@@ -453,6 +482,7 @@ export const {
     switchValueItemSelectedStatus,
     saveGameSettingsData,
     setPlaygroundData,
+    setOrderedData,
     setCurrentBackCollection,
     setInitialItemOfOrderedData,
     removeInitialStatusOfOrderedDataItem,

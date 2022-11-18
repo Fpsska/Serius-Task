@@ -1,3 +1,4 @@
 export function getRandomArrElement(array: any[]): any {
-    return array[Math.floor(Math.random() * array.length)];
+    const randomIDX = Math.floor(Math.random() * array.length);
+    return array[randomIDX];
 }
