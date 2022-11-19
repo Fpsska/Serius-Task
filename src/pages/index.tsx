@@ -13,8 +13,7 @@ import {
     saveGameSettingsData,
     setCurrentBackCollection,
     setInitialItemOfOrderedData,
-    setPlaygroundData,
-    setOrderedData
+    setPlaygroundData
 } from '../../store/mainSlice';
 
 import { getRandomArrElement } from '../helpers/getRandomArrElement';
@@ -243,18 +242,14 @@ const StartPage = () => {
 
     useEffect(() => {
         if (isGameStarted) {
-            dispatch(setInitialItemOfOrderedData({ mode: gameSettings.mode }));
             dispatch(
                 setPlaygroundData({
-                    quantityItemsLimit: +gameSettings.quantity
-                })
-            );
-            dispatch(
-                setOrderedData({
                     quantityItemsLimit: gameSettings.quantity,
-                    itemsValueLimit: gameSettings.totalValue
+                    itemsValueLimit: gameSettings.totalValue,
+                    mode: gameSettings.mode
                 })
             );
+            dispatch(setInitialItemOfOrderedData({ mode: gameSettings.mode }));
         }
     }, [gameSettings, isGameStarted]);
 

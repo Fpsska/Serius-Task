@@ -27,7 +27,9 @@
     "sourceType": "module"
   },
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "warn"
+    ],
     "no-console": "warn",
     "quotes": [
       "error",

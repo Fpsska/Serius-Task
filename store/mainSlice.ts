@@ -22,6 +22,7 @@ interface mainSliceTypes {
     currentBackgroundCollection: Ibackground;
     orderedData: Iordered[];
     refOrderedData: Iordered[];
+    countersArray: number[];
     isModalVisible: boolean;
     isGameStarted: boolean;
 }
@@ -263,6 +264,7 @@ const initialState: mainSliceTypes = {
         { id: 6, image: '', count: 0, isSelected: false }
     ],
     refOrderedData: [],
+    countersArray: [],
     gameSettings: { quantity: 0, totalValue: 0, mode: '' },
     isModalVisible: false,
     isGameStarted: false
@@ -276,10 +278,12 @@ const mainSlice = createSlice({
     reducers: {
         switchQuantityItemSelectedStatus(
             state,
-            action: PayloadAction<{ id: number }>
+            action: PayloadAction<{
+                id: number;
+            }>
         ) {
             const { id } = action.payload;
-            //
+            // /. payload
             state.quantityItemData.map(item =>
                 item.id === id
                     ? (item.isSelected = true)
@@ -288,10 +292,12 @@ const mainSlice = createSlice({
         },
         switchValueItemSelectedStatus(
             state,
-            action: PayloadAction<{ id: number }>
+            action: PayloadAction<{
+                id: number;
+            }>
         ) {
             const { id } = action.payload;
-            //
+            // /. payload
             state.valueItemData.map(item =>
                 item.id === id
                     ? (item.isSelected = true)
@@ -306,73 +312,77 @@ const mainSlice = createSlice({
         },
         setPlaygroundData(
             state,
-            action: PayloadAction<{ quantityItemsLimit: number }>
-        ) {
-            const { quantityItemsLimit } = action.payload;
-            //
-            state.currentBackgroundCollection.interactiveItems.splice(
-                quantityItemsLimit
-            );
-        },
-        setOrderedData(
-            state,
             action: PayloadAction<{
                 quantityItemsLimit: number;
                 itemsValueLimit: number;
+                mode: string;
             }>
         ) {
-            const { quantityItemsLimit, itemsValueLimit } = action.payload;
-            //
-            const numbersArr = getRandomNumOfRange(
-                itemsValueLimit,
+            const { quantityItemsLimit, itemsValueLimit, mode } =
+                action.payload;
+            // /. payload
+            state.currentBackgroundCollection.interactiveItems.splice(
                 quantityItemsLimit
             );
+
+            const isAscendingMode = mode === 'ascending';
+            const numbersArr = getRandomNumOfRange(
+                itemsValueLimit,
+                quantityItemsLimit + 1
+                // add additional element for correct render counters for interactive items including deleted value (for min/max initial item)
+            );
+            state.countersArray = numbersArr;
 
             for (
                 let i = 0;
                 i < state.currentBackgroundCollection.interactiveItems.length;
                 i++
             ) {
-                const number = numbersArr[i];
+                const filteredArr = isAscendingMode
+                    ? numbersArr.filter(
+                        item => item !== Math.min(...numbersArr)
+                    )
+                    : numbersArr.filter(
+                        item => item !== Math.max(...numbersArr)
+                    );
+                const number = filteredArr[i];
                 const playgroundItem =
                     state.currentBackgroundCollection.interactiveItems[i];
                 playgroundItem.count = number;
             }
-            // state.currentBackgroundCollection.interactiveItems.map(item => {
-            //     const randomNum = Math.floor(Math.random() * numbersArr.length);
-            //     item.count = randomNum;
-            // });
         },
         setInitialItemOfOrderedData(
             state,
-            action: PayloadAction<{ mode: string }>
+            action: PayloadAction<{
+                mode: string;
+            }>
         ) {
             const { mode } = action.payload;
-            //
+            // /. payload
             const isAscendingMode = mode === 'ascending';
             const initialItem = isAscendingMode
                 ? state.orderedData[0]
                 : state.orderedData[state.orderedData.length - 1];
+
+            const minVal = Math.min(...state.countersArray);
+            const maxVal = Math.max(...state.countersArray);
             //
             initialItem.isSelected = true;
             initialItem.isInitialValue = true;
+            initialItem.count = isAscendingMode ? minVal : maxVal;
             //
             switch (state.currentBackgroundCollection.name) {
                 case 'candy':
                     initialItem.image = '/svg/candy-item_2.svg';
-                    initialItem.count = isAscendingMode ? 36 : 118;
                     break;
                 case 'coin':
                     initialItem.image = '/svg/coin-item_1.svg';
-                    initialItem.count = isAscendingMode ? 19 : 118;
                     break;
                 case 'flower':
                     initialItem.image = '/svg/flower-item_1.svg';
-                    initialItem.count = isAscendingMode ? 22 : 118;
                     break;
                 case 'toy':
                     initialItem.image = '/svg/toy-item_5.svg';
-                    initialItem.count = isAscendingMode ? 36 : 118;
                     break;
             }
         },
@@ -386,10 +396,13 @@ const mainSlice = createSlice({
         },
         addCurrentItemToOrderedData(
             state,
-            action: PayloadAction<{ itemID: number; barID: number }>
+            action: PayloadAction<{
+                itemID: number;
+                barID: number;
+            }>
         ) {
             const { itemID, barID } = action.payload;
-            //
+            // /. payload
             const targetItem =
                 state.currentBackgroundCollection.interactiveItems.find(
                     item => item.id === itemID
@@ -412,10 +425,13 @@ const mainSlice = createSlice({
         },
         addCurrentItemToPlayground(
             state,
-            action: PayloadAction<{ playgroundID: number; itemID: number }>
+            action: PayloadAction<{
+                playgroundID: number;
+                itemID: number;
+            }>
         ) {
             const { playgroundID, itemID } = action.payload;
-            //
+            // /. payload
             const playgroundItemSlot =
                 state.currentBackgroundCollection.interactiveItems.find(
                     item => item.id === playgroundID
@@ -451,22 +467,24 @@ const mainSlice = createSlice({
         },
         setReferenceOrderedData(
             state,
-            action: PayloadAction<{ mode: string }>
+            action: PayloadAction<{
+                mode: string;
+            }>
         ) {
             const { mode } = action.payload;
-            //
+            // /. payload
             const refArr = JSON.parse(
                 JSON.stringify(state.currentBackgroundCollection)
             );
             // console.log('refArr:', refArr);
             switch (mode) {
-                case 'ascending':
+                case 'ascending': // 1...10
                     state.refOrderedData = refArr.interactiveItems.sort(
                         (a: any, b: any) => (a.count > b.count ? 1 : -1)
                     );
                     // console.log('refOrderedData ASC:', state.refOrderedData);
                     break;
-                case 'descending':
+                case 'descending': // 10...1
                     state.refOrderedData = refArr.interactiveItems
                         .sort((a: any, b: any) => (a.count < b.count ? 1 : -1))
                         .reverse();
@@ -482,7 +500,6 @@ export const {
     switchValueItemSelectedStatus,
     saveGameSettingsData,
     setPlaygroundData,
-    setOrderedData,
     setCurrentBackCollection,
     setInitialItemOfOrderedData,
     removeInitialStatusOfOrderedDataItem,
