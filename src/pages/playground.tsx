@@ -108,19 +108,28 @@ const PlaygroundPage = () => {
     }, [gameSettings]); // or gameSettings.mode
 
     useEffect(() => {
-        const outPutOrderedData = orderedData.filter(
-            item => !item.isInitialValue
+        const comparedOrderedData = orderedData.filter(
+            item => !item.isInitialValue && item.isSelected
         );
-        const isItemsSelected = orderedData.every(item => item.isSelected);
+        const comparedRefOrderedData = refOrderedData.filter(
+            item => item.isSelected
+        );
+        const outputOrderedData = orderedData.filter(
+            (item, index) => index < gameSettings.quantity
+        );
+        const isItemsSelected = outputOrderedData.every(
+            item => item.isSelected
+        );
+
         const isArraysEqual = compareObjByKey(
-            refOrderedData,
-            outPutOrderedData,
+            comparedRefOrderedData,
+            comparedOrderedData,
             'count'
         );
         if (isItemsSelected && isArraysEqual) {
             dispatch(switchModalVisibleStatus(true));
         }
-    }, [orderedData, refOrderedData]);
+    }, [orderedData, refOrderedData, gameSettings]);
 
     // /. effects
 

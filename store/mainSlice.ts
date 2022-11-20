@@ -321,8 +321,14 @@ const mainSlice = createSlice({
             const { quantityItemsLimit, itemsValueLimit, mode } =
                 action.payload;
             // /. payload
-            state.currentBackgroundCollection.interactiveItems.splice(
-                quantityItemsLimit
+            // state.currentBackgroundCollection.interactiveItems.splice(
+            //     quantityItemsLimit
+            // );
+            state.currentBackgroundCollection.interactiveItems.map(
+                (item, index) =>
+                    index > quantityItemsLimit - 1
+                        ? (item.isSelected = false)
+                        : (item.isSelected = true)
             );
 
             const isAscendingMode = mode === 'ascending';
@@ -476,7 +482,10 @@ const mainSlice = createSlice({
             const refArr = JSON.parse(
                 JSON.stringify(state.currentBackgroundCollection)
             );
-            // console.log('refArr:', refArr);
+            // console.log('refArr:', refArr.interactiveItems);
+            // console.log(
+            //     current(state.currentBackgroundCollection.interactiveItems)
+            // );
             switch (mode) {
                 case 'ascending': // 1...10
                     state.refOrderedData = refArr.interactiveItems.sort(
