@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 
-import { getRandomNumOfRange } from '../src/helpers/getRandomNumOfRange';
+import { getRandomNumsOfRange } from '../src/helpers/getRandomNumsOfRange';
 
 import { IquantityItem } from '../src/types/quantityItemTypes';
 import { IvalueItem } from '../src/types/valueItemTypes';
@@ -332,7 +332,7 @@ const mainSlice = createSlice({
             );
 
             const isAscendingMode = mode === 'ascending';
-            const numbersArr = getRandomNumOfRange(
+            const numbersArr = getRandomNumsOfRange(
                 itemsValueLimit,
                 quantityItemsLimit + 1
                 // add additional element for correct render counters for interactive items including deleted value (for min/max initial item)

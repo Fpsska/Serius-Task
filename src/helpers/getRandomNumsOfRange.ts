@@ -1,6 +1,6 @@
-export function getRandomNumOfRange(
-    range: number,
-    outputCount: number
+export function getRandomNumsOfRange(
+    range: number, // range/diapason of generating
+    outputCount: number // count of elements in array
 ): number[] {
     let minVal = 0;
 
@@ -27,14 +27,10 @@ export function getRandomNumOfRange(
         numbersOfRange.push(i);
     }
 
-    const result = [];
+    let result = [];
 
-    for (let i = 0; i < outputCount; i++) {
-        // generate including diapason, limit items in out []
-        const randomIDX = Math.floor(Math.random() * numbersOfRange.length);
-        result.push(numbersOfRange[randomIDX]);
-        numbersOfRange[randomIDX] = numbersOfRange[range - i];
-    }
+    result = [...numbersOfRange].sort(() => (Math.random() > 0.5 ? 1 : -1));
+    result.splice(outputCount);
 
     return result;
 }
