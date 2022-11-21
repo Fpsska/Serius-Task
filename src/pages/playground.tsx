@@ -114,9 +114,13 @@ const PlaygroundPage = () => {
         const comparedRefOrderedData = refOrderedData.filter(
             item => item.isSelected
         );
-        const outputOrderedData = orderedData.filter(
-            (item, index) => index < gameSettings.quantity
-        );
+
+        const isAscendingMode = gameSettings.mode === 'ascending';
+
+        const outputOrderedData = isAscendingMode
+            ? [...orderedData].splice(0, gameSettings.quantity)
+            : [...orderedData].reverse().splice(0, gameSettings.quantity);
+
         const isItemsSelected = outputOrderedData.every(
             item => item.isSelected
         );
