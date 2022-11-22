@@ -181,7 +181,7 @@ const FakeInput = styled.span`
 
 const StartPage = () => {
     const [itemQuantityValue, setItemQuantityValue] = useState<number>(2);
-    const [itemValue, setItemValue] = useState<number>(9);
+    const [itemValue, setItemValue] = useState<number | string>('А');
     const [modeValue, setModeValue] = useState<string>('ascending');
 
     const router = useRouter();

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 
-import { getRandomNumsOfRange } from '../src/helpers/getRandomNumsOfRange';
+import { getRandomElementsOfRange } from '../src/helpers/getRandomElementsOfRange';
 
 import { IquantityItem } from '../src/types/quantityItemTypes';
 import { IvalueItem } from '../src/types/valueItemTypes';
@@ -23,6 +23,7 @@ interface mainSliceTypes {
     orderedData: Iordered[];
     refOrderedData: Iordered[];
     countersArray: number[];
+    lettersArray: string[];
     isModalVisible: boolean;
     isGameStarted: boolean;
 }
@@ -59,7 +60,7 @@ const initialState: mainSliceTypes = {
     valueItemData: [
         {
             id: 1,
-            value: 'A',
+            value: 'А',
             name: 'item-value',
             isSelected: true
         },
@@ -265,6 +266,7 @@ const initialState: mainSliceTypes = {
     ],
     refOrderedData: [],
     countersArray: [],
+    lettersArray: [],
     gameSettings: { quantity: 0, totalValue: 0, mode: '' },
     isModalVisible: false,
     isGameStarted: false
@@ -314,16 +316,13 @@ const mainSlice = createSlice({
             state,
             action: PayloadAction<{
                 quantityItemsLimit: number;
-                itemsValueLimit: number;
+                itemsValueLimit: number | string;
                 mode: string;
             }>
         ) {
             const { quantityItemsLimit, itemsValueLimit, mode } =
                 action.payload;
             // /. payload
-            // state.currentBackgroundCollection.interactiveItems.splice(
-            //     quantityItemsLimit
-            // );
             state.currentBackgroundCollection.interactiveItems.map(
                 (item, index) =>
                     index > quantityItemsLimit - 1
@@ -332,29 +331,56 @@ const mainSlice = createSlice({
             );
 
             const isAscendingMode = mode === 'ascending';
-            const numbersArr = getRandomNumsOfRange(
-                itemsValueLimit,
-                quantityItemsLimit + 1
-                // add additional element for correct render counters for interactive items including deleted value (for min/max initial item)
-            );
-            state.countersArray = numbersArr;
 
-            for (
-                let i = 0;
-                i < state.currentBackgroundCollection.interactiveItems.length;
-                i++
-            ) {
-                const filteredArr = isAscendingMode
-                    ? numbersArr.filter(
-                        item => item !== Math.min(...numbersArr)
-                    )
-                    : numbersArr.filter(
-                        item => item !== Math.max(...numbersArr)
-                    );
-                const number = filteredArr[i];
-                const playgroundItem =
-                    state.currentBackgroundCollection.interactiveItems[i];
-                playgroundItem.count = number;
+            if (typeof itemsValueLimit === 'string') {
+                const lettersArr = getRandomElementsOfRange(
+                    ['А', 'Я'],
+                    quantityItemsLimit + 1
+                );
+                state.lettersArray = lettersArr;
+                // // // // SAME LOGIC  // // // //
+                for (
+                    let i = 0;
+                    i <
+                    state.currentBackgroundCollection.interactiveItems.length;
+                    i++
+                ) {
+                    const filteredArr = isAscendingMode
+                        ? lettersArr.filter(item => item !== 'А')
+                        : lettersArr.filter(item => item !== 'Я');
+                    const char = filteredArr[i];
+                    const playgroundItem =
+                        state.currentBackgroundCollection.interactiveItems[i];
+                    playgroundItem.count = char;
+                }
+                // // // //
+            } else {
+                const numbersArr = getRandomElementsOfRange(
+                    itemsValueLimit,
+                    quantityItemsLimit + 1
+                    // add additional element for correct render counters for interactive items including deleted value (for min/max initial item)
+                );
+                state.countersArray = numbersArr;
+                // // // // SAME LOGIC  // // // //
+                for (
+                    let i = 0;
+                    i <
+                    state.currentBackgroundCollection.interactiveItems.length;
+                    i++
+                ) {
+                    const filteredArr = isAscendingMode
+                        ? numbersArr.filter(
+                            item => item !== Math.min(...numbersArr)
+                        )
+                        : numbersArr.filter(
+                            item => item !== Math.max(...numbersArr)
+                        );
+                    const number = filteredArr[i];
+                    const playgroundItem =
+                        state.currentBackgroundCollection.interactiveItems[i];
+                    playgroundItem.count = number;
+                }
+                // // // //
             }
         },
         setInitialItemOfOrderedData(
@@ -366,17 +392,24 @@ const mainSlice = createSlice({
             const { mode } = action.payload;
             // /. payload
             const isAscendingMode = mode === 'ascending';
+
             const initialItem = isAscendingMode
                 ? state.orderedData[0]
                 : state.orderedData[state.orderedData.length - 1];
 
-            const minVal = Math.min(...state.countersArray);
-            const maxVal = Math.max(...state.countersArray);
-            //
             initialItem.isSelected = true;
             initialItem.isInitialValue = true;
-            initialItem.count = isAscendingMode ? minVal : maxVal;
-            //
+
+            if (typeof state.gameSettings.totalValue === 'string') {
+                const minVal = 'А';
+                const maxVal = 'Я';
+                initialItem.count = isAscendingMode ? minVal : maxVal;
+            } else {
+                const minVal = Math.min(...state.countersArray);
+                const maxVal = Math.max(...state.countersArray);
+                initialItem.count = isAscendingMode ? minVal : maxVal;
+            }
+
             switch (state.currentBackgroundCollection.name) {
                 case 'candy':
                     initialItem.image = '/svg/candy-item_2.svg';

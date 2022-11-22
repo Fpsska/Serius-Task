@@ -1,7 +1,7 @@
 export interface Iinteractive {
     id: number;
     image: string;
-    count: number;
+    count: number | string;
     isSelected: boolean;
 }
 
