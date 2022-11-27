@@ -70,7 +70,10 @@ type BarListTemplateProps = {
 // /. types
 
 interface propTypes {
-    onDragStartHandler?: (arg1: any, arg2: number) => void;
+    onDragStartHandler: (
+        arg1: React.DragEvent<HTMLDivElement>,
+        arg2: number
+    ) => void;
 }
 
 // /. interfaces

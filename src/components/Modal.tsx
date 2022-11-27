@@ -139,7 +139,7 @@ const Modal = () => {
     const onButtonRestartClick = () => {
         dispatch(switchModalVisibleStatus(false));
         dispatch(
-            saveGameSettingsData({ quantity: '', totalValue: '', mode: '' })
+            saveGameSettingsData({ quantity: 0, totalValue: 0, mode: '' })
         );
         dispatch(resetOrderedData());
         dispatch(switchGameStartedStatus(false));

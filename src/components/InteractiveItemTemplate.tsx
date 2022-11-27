@@ -55,9 +55,12 @@ const ImageWrapper = styled.div`
 
 interface propTypes {
     id: number;
-    count: number;
+    count: number | string;
     image: string;
-    onDragStartHandler?: (arg1: any, arg2: number) => void;
+    onDragStartHandler?: (
+        arg1: React.DragEvent<HTMLDivElement>,
+        arg2: number
+    ) => void;
 }
 
 // /. intefaces

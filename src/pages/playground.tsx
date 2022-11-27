@@ -78,9 +78,12 @@ const PlaygroundPage = () => {
 
     // /. hooks
 
-    const onDragStartHandler = (e: any, id: number): void => {
+    const onDragStartHandler = (
+        e: React.DragEvent<HTMLDivElement>,
+        id: number
+    ): void => {
         // console.log('Drag has started!');
-        e.dataTransfer.setData('itemID', id);
+        e.dataTransfer.setData('itemID', String(id));
     };
 
     const onDragOverHandler = (e: any): void => {
@@ -104,7 +107,12 @@ const PlaygroundPage = () => {
     // /. functions
 
     useEffect(() => {
-        dispatch(setReferenceOrderedData({ mode: gameSettings.mode }));
+        dispatch(
+            setReferenceOrderedData({
+                mode: gameSettings.mode,
+                itemsValueLimit: gameSettings.totalValue
+            })
+        );
     }, [gameSettings]); // or gameSettings.mode
 
     useEffect(() => {
@@ -118,8 +126,9 @@ const PlaygroundPage = () => {
         const isAscendingMode = gameSettings.mode === 'ascending';
 
         const outputOrderedData = isAscendingMode
-            ? [...orderedData].splice(0, gameSettings.quantity)
-            : [...orderedData].reverse().splice(0, gameSettings.quantity);
+            ? [...orderedData].splice(0, gameSettings.quantity + 1)
+            : [...orderedData].reverse().splice(0, gameSettings.quantity + 1);
+        // console.log(outputOrderedData);
 
         const isItemsSelected = outputOrderedData.every(
             item => item.isSelected
@@ -151,10 +160,10 @@ const PlaygroundPage = () => {
                                 >
                                     {template.isSelected && (
                                         <InteractiveItemTemplate
+                                            {...template}
                                             onDragStartHandler={
                                                 onDragStartHandler
                                             }
-                                            {...template}
                                         />
                                     )}
                                 </InteractiveItemTemplateWrapper>

@@ -307,6 +307,7 @@ const mainSlice = createSlice({
             );
         },
         saveGameSettingsData(state, action: PayloadAction<Isettings>) {
+            console.log('gameSettings', action.payload);
             state.gameSettings = action.payload;
         },
         setCurrentBackCollection(state, action: PayloadAction<Ibackground>) {
@@ -324,6 +325,7 @@ const mainSlice = createSlice({
                 action.payload;
             // /. payload
             state.currentBackgroundCollection.interactiveItems.map(
+                // hide excess items
                 (item, index) =>
                     index > quantityItemsLimit - 1
                         ? (item.isSelected = false)
@@ -354,7 +356,7 @@ const mainSlice = createSlice({
                     playgroundItem.count = char;
                 }
                 // // // //
-            } else {
+            } else if (typeof itemsValueLimit === 'number') {
                 const numbersArr = getRandomElementsOfRange(
                     itemsValueLimit,
                     quantityItemsLimit + 1
@@ -508,28 +510,37 @@ const mainSlice = createSlice({
             state,
             action: PayloadAction<{
                 mode: string;
+                itemsValueLimit: string | number;
             }>
         ) {
-            const { mode } = action.payload;
+            const { mode, itemsValueLimit } = action.payload;
             // /. payload
             const refArr = JSON.parse(
                 JSON.stringify(state.currentBackgroundCollection)
             );
-            // console.log('refArr:', refArr.interactiveItems);
-            // console.log(
-            //     current(state.currentBackgroundCollection.interactiveItems)
-            // );
+            const isStringType = typeof itemsValueLimit === 'string';
+
             switch (mode) {
-                case 'ascending': // 1...10
-                    state.refOrderedData = refArr.interactiveItems.sort(
-                        (a: any, b: any) => (a.count > b.count ? 1 : -1)
-                    );
+                case 'ascending': // 1...10 or A...Z
+                    state.refOrderedData = isStringType
+                        ? refArr.interactiveItems.sort((a: any, b: any) =>
+                            a.count < b.count ? -1 : 1
+                        )
+                        : refArr.interactiveItems.sort(
+                            (a: any, b: any) => a.count - b.count
+                        );
                     // console.log('refOrderedData ASC:', state.refOrderedData);
                     break;
-                case 'descending': // 10...1
-                    state.refOrderedData = refArr.interactiveItems
-                        .sort((a: any, b: any) => (a.count < b.count ? 1 : -1))
-                        .reverse();
+                case 'descending': // 10...1 or Z...A
+                    state.refOrderedData = isStringType
+                        ? refArr.interactiveItems
+                            .sort((a: any, b: any) =>
+                                a.count > b.count ? -1 : 1
+                            )
+                            .reverse()
+                        : refArr.interactiveItems
+                            .sort((a: any, b: any) => b.count - a.count)
+                            .reverse();
                     // console.log('refOrderedData DESC:', state.refOrderedData);
                     break;
             }
