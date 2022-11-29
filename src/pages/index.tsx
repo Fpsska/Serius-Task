@@ -63,6 +63,7 @@ const ButtonPlay = styled.button`
 const Form = styled.form`
     padding: 35px 20px 25px 20px;
     height: 100%;
+    overflow-y: scroll;
     background-color: var(--white-color);
     border-radius: 4%;
     display: flex;
@@ -74,14 +75,10 @@ const Form = styled.form`
 const Fieldset = styled.fieldset`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 100%;
-`;
-
-const FieldsetGrowed = styled(Fieldset)`
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    width: 100%;
+    height: 100%;
+    margin-bottom: 50px;
 `;
 
 const List = styled.ul`
@@ -127,7 +124,6 @@ const Label = styled.label`
     font-size: 18px;
     transition: all 0.3s ease-in-out;
     order: -1;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -259,7 +255,7 @@ const StartPage = () => {
         <Section>
             <Wrapper>
                 <Form onSubmit={e => e.preventDefault()}>
-                    <FieldsetGrowed>
+                    <Fieldset>
                         <Legend>Кол-во предметов</Legend>
                         <List>
                             {quantityItemData.map((input: IquantityItem) => (
@@ -287,8 +283,8 @@ const StartPage = () => {
                                 </ListTemplate>
                             ))}
                         </List>
-                    </FieldsetGrowed>
-                    <FieldsetGrowed>
+                    </Fieldset>
+                    <Fieldset>
                         <Legend>Значения</Legend>
                         <List>
                             {valueItemData.map((input: IvalueItem) => (
@@ -316,7 +312,7 @@ const StartPage = () => {
                                 </ListTemplate>
                             ))}
                         </List>
-                    </FieldsetGrowed>
+                    </Fieldset>
                     <Fieldset>
                         <Legend hidden>Режим</Legend>
                         <Mode setModeValue={setModeValue} />

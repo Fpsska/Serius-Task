@@ -60,6 +60,20 @@ address {
     font-style: normal;
 }
 
+*::-webkit-scrollbar {
+    width: 0;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 0;
+    border: 0 none transparent;
+}
+
 /* /. null-styles */
 
 :root {

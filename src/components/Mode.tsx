@@ -8,6 +8,8 @@ import { IbuttonMode } from '../types/buttonModTypes';
 
 const StyledMode = styled.div`
     display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     justify-content: center;
     margin-bottom: 95px;
 `;
@@ -25,6 +27,9 @@ const ModeButton = styled.input`
 `;
 
 const ModeButtonLabel = styled.label<ButtonModeProps>`
+    width: 100%;
+    text-align: center;
+    flex: 1 1 calc(100% / 2 - 20px);
     background-color: var(--yellow-color);
     padding: 5px 20px;
     color: var(--dark-color);
@@ -34,7 +39,7 @@ const ModeButtonLabel = styled.label<ButtonModeProps>`
     opacity: ${props => (props.isSelected ? 1 : 0.5)};
     transition: all 0.3s ease-in-out;
     :not(:last-child) {
-        margin-right: 36px;
+        // margin-right: 36px;
     }
     &:hover {
         cursor: pointer;
